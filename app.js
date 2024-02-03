@@ -1,0 +1,27 @@
+const express = require("express");
+const CustomError = require("./utils/CustomError");
+const userRoute = require("./routes/userRoute");
+const errorController = require("./controllers/errorController");
+
+const app = express();
+
+app.use(express.json({ limit: "10kb" }));
+app.use(express.urlencoded({ limit: "10kb", extended: true }));
+
+app.use("/api/v1/users", userRoute);
+// app.use("api/v1")
+
+app.all("*", (req, res, next) => {
+  return next(
+    new CustomError(
+      `Sorry this route ${req.protocol}://${req.get("host")}${
+        req.originalUrl
+      } doesn't exist`,
+      404
+    )
+  );
+});
+
+app.use(errorController);
+
+module.exports = app;
