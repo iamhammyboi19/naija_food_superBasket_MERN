@@ -6,11 +6,11 @@ const { filter_update_obj } = require("../utils/reuseables");
 exports.create_menu = async (req, res, next) => {
   try {
     const { menu_name, price, menu_desc } = req.body;
-    //
+    // CREATE A MENU
     const menu = await Menu.create({
       menu_desc,
       menu_name,
-      menu_image: req.file_name,
+      menu_image: process.env.IMAGE_UPLOAD_URL + req.file_name,
       price,
       restaurant: req.current_user._id,
     });
@@ -19,6 +19,30 @@ exports.create_menu = async (req, res, next) => {
       status: "success",
       menu,
       message: `Menu successfully created`,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get menu
+exports.get_specific_menu = async (req, res, next) => {
+  try {
+    const { menu_id } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(
+        new CustomError(
+          "This menu is either unavailable or deleted, please check your menu list and try again",
+          404
+        )
+      );
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        menu,
+      },
     });
   } catch (err) {
     next(err);
@@ -39,6 +63,14 @@ exports.update_menu = async (req, res, next) => {
       new: true,
       runValidators: true,
     });
+    if (!menu) {
+      return next(
+        new CustomError(
+          "This menu is either unavailable or deleted, please check your menu list and try again",
+          404
+        )
+      );
+    }
     res.status(200).json({
       status: "success",
       message: "Menu successfully updated",
@@ -55,7 +87,12 @@ exports.update_menu = async (req, res, next) => {
 exports.delete_menu = async (req, res, next) => {
   try {
     const { menu_id } = req.params;
-    await Menu.findByIdAndDelete(menu_id);
+    const menu = await Menu.findByIdAndDelete(menu_id);
+    if (!menu) {
+      return next(
+        new CustomError("The menu you are trying to delete doesn't exist", 404)
+      );
+    }
     res.status(204).json({
       status: "success",
       message: "Menu successfully deleted",
@@ -74,11 +111,92 @@ exports.add_toppings = async (req, res, next) => {
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
-    menu.toppings.push({ toppings_name, compulsory });
+    // check toppings name for duplicate
+    let count = 0;
+    menu.toppings.forEach((el) => {
+      if (el.toppings_name === toppings_name) {
+        count++;
+      }
+    });
+
+    if (count > 0) {
+      return next(
+        new CustomError(
+          `Duplicate fields ${toppings_name} toppings already exists for menu`,
+          400
+        )
+      );
+    } else {
+      console.log("duplicate reach here?\n");
+      menu.toppings.push({ toppings_name, compulsory });
+      await menu.save();
+      res.status(200).json({
+        status: "success",
+        message: `${toppings_name} successfully added to the menu`,
+        data: {
+          menu,
+        },
+      });
+    }
+    //
+  } catch (err) {
+    next(err);
+  }
+};
+
+// get specific menu toppings
+exports.get_specific_menu_toppings = async (req, res, next) => {
+  try {
+    const { menu_id, toppings_name } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError("There is no menu toppings with this id", 404)
+      );
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        toppings,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// update menu toppings
+exports.update_menu_toppings = async (req, res, next) => {
+  try {
+    //
+    const { menu_id, toppings_name } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError("There is no menu toppings with this id", 404)
+      );
+    }
+    const update_fields = filter_update_obj(req.body, [
+      "toppings_name",
+      "compulsory",
+    ]);
+    toppings.set(update_fields);
     await menu.save();
     res.status(200).json({
       status: "success",
-      message: "Toppings successfully added to the menu",
+      message: `${toppings.toppings_name} successfully updated`,
       data: {
         menu,
       },
@@ -88,8 +206,195 @@ exports.add_toppings = async (req, res, next) => {
   }
 };
 
-// update menu toppings
-
 // delete a menu toppings
+exports.delete_menu_toppings = async (req, res, next) => {
+  try {
+    const { menu_id, toppings_name } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError("There is no menu toppings with this id", 404)
+      );
+    }
+    toppings.deleteOne();
+    await menu.save();
+    res.status(204).json({
+      status: "success",
+      message: "Menu toppings successfully deleted",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
 
-// https://productsawsbucket.s3.eu-north-1.amazonaws.com/nfsB_images_1706966688714.jpeg
+// add toppings to menu
+exports.add_options_to_toppings = async (req, res, next) => {
+  try {
+    const { menu_id, toppings_name } = req.params;
+    const { name, price } = req.body;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError(
+          `There is no menu toppings with the name ${toppings_name}`,
+          404
+        )
+      );
+    }
+
+    // check for duplicate option name
+    let count = 0;
+    toppings.options.forEach((el) => {
+      if (el.name === option_name) {
+        count++;
+      }
+    });
+
+    // there a option name with the one from req.body
+    if (count > 0) {
+      return next(
+        new CustomError(
+          `Duplicate field there is an option with the name ${option_name} for ${toppings_name}`
+        )
+      );
+    } else {
+      toppings.options.push({ name, price });
+      await menu.save();
+      res.status(200).json({
+        status: "success",
+        message: `${name} successfully added to ${toppings.toppings_name}`,
+        data: {
+          menu,
+        },
+      });
+    }
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.get_toppings_opt = async (req, res, next) => {
+  try {
+    const { menu_id, toppings_name, option_name } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError(
+          `There is no menu toppings with the name ${toppings_name}`,
+          404
+        )
+      );
+    }
+    const option = toppings.filter((el) => el.name === option_name).at(0);
+    if (!option) {
+      return next(
+        new CustomError(`No option found with the name ${option_name}`, 404)
+      );
+    }
+    res.status(200).json({
+      status: "success",
+      data: {
+        option,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// update menu toppings option
+exports.update_toppings_opt = async (req, res, next) => {
+  try {
+    const { menu_id, toppings_name, option_name } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError(
+          `There is no menu toppings with the name ${toppings_name}`,
+          404
+        )
+      );
+    }
+    const option = toppings.filter((el) => el.name === option_name).at(0);
+    if (!option) {
+      return next(
+        new CustomError(`No option found with the name ${option_name}`, 404)
+      );
+    }
+    const update_fields = filter_update_obj(req.body, ["name", "price"]);
+    option.set(update_fields);
+    await menu.save();
+    res.status(200).json({
+      status: "success",
+      message: `${option.name} successfully updated`,
+      data: {
+        menu,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// delete menu toppings option
+exports.delete_toppings_opt = async (req, res, next) => {
+  try {
+    const { menu_id, toppings_name, opt_id } = req.params;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("No menu found with this id", 404));
+    }
+    const toppings = menu.toppings
+      .filter((el) => el.toppings_name === toppings_name)
+      .at(0);
+    if (!toppings) {
+      return next(
+        new CustomError(
+          `There is no menu toppings with the name ${toppings_name}`,
+          404
+        )
+      );
+    }
+    const option = toppings.filter((el) => el.name === option_name).at(0);
+    if (!option) {
+      return next(
+        new CustomError(`No option found with the name ${option_name}`, 404)
+      );
+    }
+    option.deleteOne();
+    await menu.save();
+    res.status(204).json({
+      status: "success",
+      message: `Toppings option successfully deleted`,
+      data: {
+        menu,
+      },
+    });
+  } catch (err) {
+    next(err);
+  }
+};

@@ -64,13 +64,12 @@ function fileFilter(req, file, cb) {
 
 const upload = multer({
   storage,
-  // fileFilter,
+  fileFilter,
   limits: { fileSize: 1024 * 1024 * 10 }, // 10mb
 }).single("nfsB_images");
 
 module.exports = (req, res, next) => {
   return upload(req, res, function (err) {
-
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.
       console.log("multer-err", err);

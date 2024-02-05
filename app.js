@@ -1,6 +1,8 @@
 const express = require("express");
+const morgan = require("morgan");
 const CustomError = require("./utils/CustomError");
 const userRoute = require("./routes/userRoute");
+const menuRoute = require("./routes/menuRoute");
 const errorController = require("./controllers/errorController");
 
 const app = express();
@@ -8,8 +10,10 @@ const app = express();
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "10kb", extended: true }));
 
+app.use(morgan("dev"));
+
 app.use("/api/v1/users", userRoute);
-// app.use("api/v1")
+app.use("/api/v1/menus", menuRoute);
 
 app.all("*", (req, res, next) => {
   return next(

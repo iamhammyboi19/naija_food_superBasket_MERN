@@ -5,10 +5,12 @@ const toppingsOptionsSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, "Please provide name for the toppings option"],
+    lowercase: true,
   },
   price: {
     type: Number,
     default: 0,
+    min: [0, "Price can't be less than 0"],
   },
 });
 
@@ -19,6 +21,8 @@ const toppingsSchema = new mongoose.Schema(
     toppings_name: {
       type: String,
       required: [true, "Toppings must have a name"],
+      trim: true,
+      lowercase: true,
     },
     compulsory: {
       type: Boolean,

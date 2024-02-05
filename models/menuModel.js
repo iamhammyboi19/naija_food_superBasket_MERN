@@ -31,7 +31,7 @@ const menuSchema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// menuSchema.index({ restuarant: 1, menu_name: 1 }, { unique: true });
+menuSchema.index({ restuarant: 1, menu_name: 1 }, { unique: true });
 
 const Menu = mongoose.model("Menu", menuSchema);
 
