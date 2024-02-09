@@ -179,6 +179,7 @@ exports.login_user = async (req, res, next) => {
       user.locked.attempts = 0;
       user.locked.is_locked = false;
       user.locked.unlock_at = null;
+      user.active = true;
 
       await user.save({ validateBeforeSave: false });
 

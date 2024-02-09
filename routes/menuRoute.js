@@ -11,24 +11,24 @@ router.post("/create_menu", multer_imgs_upload, menuController.create_menu);
 router
   .route("/:menu_id")
   .get(menuController.get_specific_menu)
-  .patch(menuController.update_menu)
+  .patch(multer_imgs_upload, menuController.update_menu)
   .delete(menuController.delete_menu);
 // add toppings to a menu
 router.post("/add_toppings/:menu_id", menuController.add_toppings);
 // add toppings option to menu toppings
 router.post(
-  "/add_toppings_options/:menu_id/:toppings_name",
+  "/add_toppings_options/:menu_id/:toppings_slug",
   menuController.add_options_to_toppings
 );
 // get update delete toppings
 router
-  .route("/toppings/:menu_id/:toppings_name")
+  .route("/toppings/:menu_id/:toppings_slug")
   .get(menuController.get_specific_menu_toppings)
   .patch(menuController.update_menu_toppings)
   .delete(menuController.delete_menu_toppings);
 
 router
-  .route("/toppings_option/:menu_id/:toppings_name/:option_name")
+  .route("/toppings_option/:menu_id/:toppings_slug/:option_slug")
   .get(menuController.get_toppings_opt)
   .patch(menuController.update_toppings_opt)
   .delete(menuController.delete_toppings_opt);

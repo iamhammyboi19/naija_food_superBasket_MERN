@@ -66,7 +66,7 @@ const userSchema = new mongoose.Schema(
           street_name: String,
           building_name: String,
           door_number: String,
-          floor: String,
+          floor_number: String,
           direction: String,
         },
       },
@@ -90,6 +90,10 @@ const userSchema = new mongoose.Schema(
     confirm_user_phone_number_token: String,
     confirm_email_token_expires_at: Date,
     confirm_phone_token_expires_at: Date,
+    active: {
+      type: Boolean,
+      default: true,
+    },
     carts: {},
     role: {
       type: String,
@@ -181,7 +185,3 @@ userSchema.method("verify_user_jwt_created_time", async function (jwt_time) {
 const User = mongoose.model("User", userSchema);
 
 module.exports = User;
-
-// https://maps.googleapis.com/maps/api/geocode/json?place_id=ChIJeRpOeF67j4AR9ydy_PIzPuM&key=
-
-// https://maps.googleapis.com/maps/api/geocode/json?address=lekki phase 2&key=

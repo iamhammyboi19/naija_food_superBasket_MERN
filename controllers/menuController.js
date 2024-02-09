@@ -2,6 +2,8 @@ const Menu = require("../models/menuModel");
 const CustomError = require("../utils/CustomError");
 const { filter_update_obj } = require("../utils/reuseables");
 
+// const x = 100;
+
 // only restaurant owner can create a menu
 exports.create_menu = async (req, res, next) => {
   try {
@@ -58,7 +60,9 @@ exports.update_menu = async (req, res, next) => {
       "price",
       "menu_desc",
     ]);
-    if (req.file) update_fields.menu_image = req.file_name;
+    if (req.file) {
+      update_fields.menu_image = process.env.IMAGE_UPLOAD_URL + req.file_name;
+    }
     const menu = await Menu.findByIdAndUpdate(menu_id, update_fields, {
       new: true,
       runValidators: true,
@@ -114,7 +118,7 @@ exports.add_toppings = async (req, res, next) => {
     // check toppings name for duplicate
     let count = 0;
     menu.toppings.forEach((el) => {
-      if (el.toppings_name === toppings_name) {
+      if (el.toppings_name === toppings_name.toLowerCase()) {
         count++;
       }
     });
@@ -127,7 +131,6 @@ exports.add_toppings = async (req, res, next) => {
         )
       );
     } else {
-      console.log("duplicate reach here?\n");
       menu.toppings.push({ toppings_name, compulsory });
       await menu.save();
       res.status(200).json({
@@ -147,13 +150,13 @@ exports.add_toppings = async (req, res, next) => {
 // get specific menu toppings
 exports.get_specific_menu_toppings = async (req, res, next) => {
   try {
-    const { menu_id, toppings_name } = req.params;
+    const { menu_id, toppings_slug } = req.params;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
     const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
     if (!toppings) {
       return next(
@@ -175,17 +178,22 @@ exports.get_specific_menu_toppings = async (req, res, next) => {
 exports.update_menu_toppings = async (req, res, next) => {
   try {
     //
-    const { menu_id, toppings_name } = req.params;
+    const { menu_id, toppings_slug } = req.params;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
     const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
     if (!toppings) {
       return next(
-        new CustomError("There is no menu toppings with this id", 404)
+        new CustomError(
+          `There is no menu toppings with the name ${toppings_slug
+            .split("_")
+            .join(" ")}`,
+          404
+        )
       );
     }
     const update_fields = filter_update_obj(req.body, [
@@ -209,17 +217,22 @@ exports.update_menu_toppings = async (req, res, next) => {
 // delete a menu toppings
 exports.delete_menu_toppings = async (req, res, next) => {
   try {
-    const { menu_id, toppings_name } = req.params;
+    const { menu_id, toppings_slug } = req.params;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
     const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
     if (!toppings) {
       return next(
-        new CustomError("There is no menu toppings with this id", 404)
+        new CustomError(
+          `There is no menu toppings with the name ${toppings_slug
+            .split("_")
+            .join(" ")}`,
+          404
+        )
       );
     }
     toppings.deleteOne();
@@ -236,19 +249,21 @@ exports.delete_menu_toppings = async (req, res, next) => {
 // add toppings to menu
 exports.add_options_to_toppings = async (req, res, next) => {
   try {
-    const { menu_id, toppings_name } = req.params;
+    const { menu_id, toppings_slug } = req.params;
     const { name, price } = req.body;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
     const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
     if (!toppings) {
       return next(
         new CustomError(
-          `There is no menu toppings with the name ${toppings_name}`,
+          `There is no menu toppings with the name ${toppings_slug
+            .split("_")
+            .join(" ")}`,
           404
         )
       );
@@ -257,7 +272,7 @@ exports.add_options_to_toppings = async (req, res, next) => {
     // check for duplicate option name
     let count = 0;
     toppings.options.forEach((el) => {
-      if (el.name === option_name) {
+      if (el.name === name.toLowerCase()) {
         count++;
       }
     });
@@ -266,7 +281,9 @@ exports.add_options_to_toppings = async (req, res, next) => {
     if (count > 0) {
       return next(
         new CustomError(
-          `Duplicate field there is an option with the name ${option_name} for ${toppings_name}`
+          `Duplicate field there is an option with the name ${name} for ${toppings_slug
+            .split("_")
+            .join(" ")}`
         )
       );
     } else {
@@ -287,26 +304,33 @@ exports.add_options_to_toppings = async (req, res, next) => {
 
 exports.get_toppings_opt = async (req, res, next) => {
   try {
-    const { menu_id, toppings_name, option_name } = req.params;
+    const { menu_id, toppings_slug, option_slug } = req.params;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
-    const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+    const toppings_found = menu.toppings
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
-    if (!toppings) {
+
+    if (!toppings_found) {
       return next(
         new CustomError(
-          `There is no menu toppings with the name ${toppings_name}`,
+          `There is no menu toppings with the name ${toppings_slug}`,
           404
         )
       );
     }
-    const option = toppings.filter((el) => el.name === option_name).at(0);
+    const option = toppings_found.options
+      .filter((el) => el.slug === option_slug)
+      .at(0);
+
     if (!option) {
       return next(
-        new CustomError(`No option found with the name ${option_name}`, 404)
+        new CustomError(
+          `No option found with the name ${option_slug.split("_").join(" ")}`,
+          404
+        )
       );
     }
     res.status(200).json({
@@ -323,26 +347,33 @@ exports.get_toppings_opt = async (req, res, next) => {
 // update menu toppings option
 exports.update_toppings_opt = async (req, res, next) => {
   try {
-    const { menu_id, toppings_name, option_name } = req.params;
+    const { menu_id, toppings_slug, option_slug } = req.params;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
     const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
     if (!toppings) {
       return next(
         new CustomError(
-          `There is no menu toppings with the name ${toppings_name}`,
+          `There is no menu toppings with the name ${toppings_slug
+            .split("_")
+            .join(" ")}`,
           404
         )
       );
     }
-    const option = toppings.filter((el) => el.name === option_name).at(0);
+    const option = toppings.options
+      .filter((el) => el.slug === option_slug)
+      .at(0);
     if (!option) {
       return next(
-        new CustomError(`No option found with the name ${option_name}`, 404)
+        new CustomError(
+          `No option found with the name ${option_slug.split("_").join(" ")}`,
+          404
+        )
       );
     }
     const update_fields = filter_update_obj(req.body, ["name", "price"]);
@@ -363,26 +394,33 @@ exports.update_toppings_opt = async (req, res, next) => {
 // delete menu toppings option
 exports.delete_toppings_opt = async (req, res, next) => {
   try {
-    const { menu_id, toppings_name, opt_id } = req.params;
+    const { menu_id, toppings_slug, option_slug } = req.params;
     const menu = await Menu.findById(menu_id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
     }
     const toppings = menu.toppings
-      .filter((el) => el.toppings_name === toppings_name)
+      .filter((el) => el.slug === toppings_slug)
       .at(0);
     if (!toppings) {
       return next(
         new CustomError(
-          `There is no menu toppings with the name ${toppings_name}`,
+          `There is no menu toppings with the name ${toppings_slug
+            .split("_")
+            .join(" ")}`,
           404
         )
       );
     }
-    const option = toppings.filter((el) => el.name === option_name).at(0);
+    const option = toppings.options
+      .filter((el) => el.slug === option_slug)
+      .at(0);
     if (!option) {
       return next(
-        new CustomError(`No option found with the name ${option_name}`, 404)
+        new CustomError(
+          `No option found with the name ${option_slug.split("_").join(" ")}`,
+          404
+        )
       );
     }
     option.deleteOne();
@@ -398,3 +436,8 @@ exports.delete_toppings_opt = async (req, res, next) => {
     next(err);
   }
 };
+
+/*
+
+ menu_id and toppings_name, toppings_name params should be derived from toppings.slug e.g soft drinks should be /api/v1/menus/add_toppings/menu_id/soft_drinks
+*/

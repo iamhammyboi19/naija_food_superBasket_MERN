@@ -24,6 +24,9 @@ module.exports = {
     "comma-dangle": ["error", "only-multiline"],
     semi: ["error", "always"],
     camelcase: "off",
-    "space-before-function-paren": ["error", "ignore"],
+    "space-before-function-paren": [
+      "error",
+      { anonymous: "always", named: "never", asyncArrow: "always" },
+    ],
   },
 };

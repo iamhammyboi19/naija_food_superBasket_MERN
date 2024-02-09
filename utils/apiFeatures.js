@@ -41,7 +41,7 @@ module.exports = class ApiFeatures {
     if (this.url_query_strings.fields) {
       const query_obj = { ...this.url_query_strings };
       // remove password as selected fields
-      let select_fields = this.query.fields
+      const select_fields = query_obj.fields
         .split(",")
         .filter((el) => el !== "+password")
         .filter((el) => el !== "password")

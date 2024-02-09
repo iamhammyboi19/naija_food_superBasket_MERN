@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const slugify = require("slugify");
 
 // toppings options eg pepsi, cocacola, fanta
 const toppingsOptionsSchema = new mongoose.Schema({
@@ -6,12 +7,14 @@ const toppingsOptionsSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please provide name for the toppings option"],
     lowercase: true,
+    trim: true,
   },
   price: {
     type: Number,
     default: 0,
     min: [0, "Price can't be less than 0"],
   },
+  slug: String,
 });
 
 // restuarants can add multiple toppings to a menu
@@ -28,10 +31,29 @@ const toppingsSchema = new mongoose.Schema(
       type: Boolean,
       required: [true, "Please check if toppings is compulsory or not"],
     },
+    slug: String,
     options: [toppingsOptionsSchema],
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
+
+toppingsSchema.pre("save", function (next) {
+  this.slug = slugify(this.toppings_name, {
+    replacement: "_",
+    lower: true,
+    trim: true,
+  });
+  next();
+});
+
+toppingsOptionsSchema.pre("save", function (next) {
+  this.slug = slugify(this.name, {
+    replacement: "_",
+    lower: true,
+    trim: true,
+  });
+  next();
+});
 
 module.exports = toppingsSchema;
 

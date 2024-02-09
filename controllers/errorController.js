@@ -15,8 +15,6 @@ function handle_validation_error(err) {
 }
 
 module.exports = (err, req, res, next) => {
-
-
   err.statusCode = err.statusCode || 500;
   // check if it's in development
   if (process.env.NODE_ENV === "development") {
@@ -29,9 +27,8 @@ module.exports = (err, req, res, next) => {
           status: err.status,
           message: err.message,
         });
-      }
-      // check if it is NOT operational error
-      else {
+        // check if it is NOT operational error
+      } else {
         console.log(err);
         console.log("err status", err.code);
         res.status(err.statusCode).json({
@@ -40,20 +37,18 @@ module.exports = (err, req, res, next) => {
           err,
         });
       }
-    }
-    // probably a wrong route or a frontend rendering for example pug template
-    // USE THIS FOR RENDERING THE ERROR eg USING PUG TEMPLATE
-    // THIS PART FOR NOW IS NOT SO USEFUL BUT INCASE I WANNA DO A SERVER RENDERING WITH PUG TEMPLATE I WILL JUST REIMPLEMENT IT
-    else {
+      // probably a wrong route or a frontend rendering for example pug template
+      // USE THIS FOR RENDERING THE ERROR eg USING PUG TEMPLATE
+      // THIS PART FOR NOW IS NOT SO USEFUL BUT INCASE I WANNA DO A SERVER RENDERING WITH PUG TEMPLATE I WILL JUST REIMPLEMENT IT
+    } else {
       res.status(err.statusCode).json({
         status: "fail",
         message: err.message,
         err,
       });
     }
-  }
-  // handle error in development
-  else {
+    // handle error in development
+  } else {
     send_production_error(err, req, res, next);
   }
 };
@@ -77,9 +72,8 @@ function send_production_error(err, req, res, next) {
         status: error.status,
         message: error.message,
       });
-    }
-    // check if it is NOT operational error
-    else {
+      // check if it is NOT operational error
+    } else {
       console.log(error);
       console.log("error status", error.code);
       res.status(error.statusCode).json({
@@ -87,10 +81,9 @@ function send_production_error(err, req, res, next) {
         message: "Ooops something went wrong",
       });
     }
-  }
-  // USE THIS FOR RENDERING THE ERROR eg USING PUG TEMPLATE
-  // THIS PART FOR NOW IS NOT SO USEFUL BUT INCASE I WANNA DO A SERVER RENDERING WITH PUG TEMPLATE I WILL JUST REIMPLEMENT IT
-  else {
+    // USE THIS FOR RENDERING THE ERROR eg USING PUG TEMPLATE
+    // THIS PART FOR NOW IS NOT SO USEFUL BUT INCASE I WANNA DO A SERVER RENDERING WITH PUG TEMPLATE I WILL JUST REIMPLEMENT IT
+  } else {
     // check if it is operational error
     if (error.isOperational) {
       console.log(error.stack);
@@ -98,8 +91,8 @@ function send_production_error(err, req, res, next) {
         status: error.status,
         message: error.message,
       });
-    } // check if it is NOT operational error
-    else {
+      // check if it is NOT operational error
+    } else {
       console.log(error);
       console.log("error status", error.code);
       res.status(error.statusCode).json({
