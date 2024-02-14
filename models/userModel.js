@@ -63,6 +63,7 @@ const userSchema = new mongoose.Schema(
           // required: [true, "Please provide your restuarant location"],
         },
         address: {
+          suburb: String, // this would be auto generated with returned value after user provide lng, lat
           street_name: String,
           building_name: String,
           door_number: String,

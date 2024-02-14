@@ -14,6 +14,10 @@ function handle_validation_error(err) {
   return new CustomError(err.message, 403);
 }
 
+function handle_cast_error(err) {
+  return new CustomError(`Invalid ${err.path} for ${err.value}`, 404);
+}
+
 module.exports = (err, req, res, next) => {
   err.statusCode = err.statusCode || 500;
   // check if it's in development
@@ -40,6 +44,7 @@ module.exports = (err, req, res, next) => {
       // probably a wrong route or a frontend rendering for example pug template
       // USE THIS FOR RENDERING THE ERROR eg USING PUG TEMPLATE
       // THIS PART FOR NOW IS NOT SO USEFUL BUT INCASE I WANNA DO A SERVER RENDERING WITH PUG TEMPLATE I WILL JUST REIMPLEMENT IT
+      // IGNORE!!!!!!!!!!!!!!!!!!!!!!!!!!
     } else {
       res.status(err.statusCode).json({
         status: "fail",
@@ -47,21 +52,25 @@ module.exports = (err, req, res, next) => {
         err,
       });
     }
-    // handle error in development
+    // handle error in production
   } else {
-    send_production_error(err, req, res, next);
+    // check as much as you can if error can be converted to operational error
+    let error = Object.assign(err);
+    if (error.code === 11000) {
+      error = handle_duplicate_field(error);
+    }
+    if (error.name === "ValidationError") {
+      error = handle_validation_error(error);
+    }
+    if (error.name === "CastError") {
+      error = handle_cast_error(error);
+    }
+    send_production_error(error, req, res, next);
   }
 };
 
-function send_production_error(err, req, res, next) {
+function send_production_error(error, req, res, next) {
   //
-  let error = { ...err };
-  if (error.code === 11000) {
-    error = handle_duplicate_field(error);
-  }
-  if (error.name === "ValidationError") {
-    error = handle_validation_error(error);
-  }
 
   // check if error is from the api route itself
   if (req.originalUrl.startsWith("/api")) {
@@ -75,7 +84,6 @@ function send_production_error(err, req, res, next) {
       // check if it is NOT operational error
     } else {
       console.log(error);
-      console.log("error status", error.code);
       res.status(error.statusCode).json({
         status: "fail",
         message: "Ooops something went wrong",
@@ -83,6 +91,7 @@ function send_production_error(err, req, res, next) {
     }
     // USE THIS FOR RENDERING THE ERROR eg USING PUG TEMPLATE
     // THIS PART FOR NOW IS NOT SO USEFUL BUT INCASE I WANNA DO A SERVER RENDERING WITH PUG TEMPLATE I WILL JUST REIMPLEMENT IT
+    // IGNORE!!!!!!!!!!!!!!!!!!!!!!!!!!
   } else {
     // check if it is operational error
     if (error.isOperational) {

@@ -1,4 +1,5 @@
 const User = require("../models/userModel");
+const Menu = require("../models/menuModel");
 const CustomError = require("../utils/CustomError");
 const ApiFeatures = require("../utils/apiFeatures");
 
@@ -49,9 +50,150 @@ exports.get_user = async (req, res, next) => {
   }
 };
 
+// add menu to cart
 exports.add_product_to_cart = async (req, res, next) => {
   try {
     //
+    const { menu_id } = req.params;
+    const user = req.current_user;
+
+    const query = req.query;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(new CustomError("Menu unavailable", 404));
+    }
+
+    const find_cart_item = user.carts?.filter((el) => el.id === menu_id)?.at(0);
+    console.log("find_cart_item", find_cart_item);
+
+    // if there is same menu in cart already increment menu
+    if (find_cart_item !== undefined || find_cart_item?.length > 0) {
+      find_cart_item.quantity += 1;
+      find_cart_item.total_price =
+        find_cart_item.price * find_cart_item.quantity;
+      const item_index = user.carts.findIndex((el) => el.id === menu_id);
+      const useritems = user.carts;
+      useritems[item_index] = find_cart_item;
+      user.carts = [];
+      user.carts.push(...useritems);
+      user.markModified("carts");
+      await user.save({ validateBeforeSave: false });
+      // if the menu is not in cart before add new item to the cart
+    } else {
+      // take queries and convert to array objects so you can filter them out eg
+      // ?extra_proteinn=goat_meat&drinks=fanta
+      // tops = [extra_proteinn, drinks]
+      // opts = [goat_meat, fanta]
+      const tops = Object.keys(query);
+      const opts = Object.values(query);
+      // filter toppings_name in tops
+      const filter_tops = menu.toppings.filter((el) => tops.includes(el.slug));
+      // first map get options from each toppings and second map finds opts from the query inside the toppings
+      const filter_opts = filter_tops
+        // el.options returns list of options
+        .map((el) => el.options)
+        // loop the list of options to take out the specific one you need
+        .map((el2) => el2.find((el3) => opts.includes(el3.slug)));
+      // get toppings_name:{options} like this
+      const tops_opts_picked = {};
+      let toppings_price = 0;
+      if (filter_tops.length > 0) {
+        filter_tops.forEach((el, index) => {
+          tops_opts_picked[el.toppings_name] = filter_opts[index];
+          toppings_price += filter_opts[index]?.price;
+        });
+        // tops_opts_picked.tops_price = toppings_price;
+      }
+      // reconstruct the menu before adding to cart
+      const cart_menu = {
+        ...menu.toObject(),
+        toppings: tops_opts_picked,
+        price: menu.price + toppings_price,
+        quantity: 1,
+      };
+      cart_menu.total_price = cart_menu.price * cart_menu.quantity;
+      user.carts = [];
+      user.carts.push(cart_menu);
+      user.markModified("carts");
+      await user.save({ validateBeforeSave: false });
+    }
+
+    res.status(200).json({
+      status: "success",
+      message: "Menu successfully added to cart",
+      data: {
+        user,
+      },
+      numbers_of_products: user.carts.length,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.remove_products_from_cart = async (req, res, next) => {
+  try {
+    //
+    const { menu_id } = req.params;
+    const user = req.current_user;
+    const menu = await Menu.findById(menu_id);
+    if (!menu) {
+      return next(
+        new CustomError(
+          "Menu unavailable! Click on clear all carts if you are unable to delete a menu",
+          404
+        )
+      );
+    }
+
+    const find_cart_item = user.carts?.filter((el) => el.id === menu_id)?.at(0);
+    const useritems = user.carts;
+
+    if (find_cart_item !== undefined) {
+      // IF ONE QUANTITY REMOVE COMPLETELY FROM CART
+      if (find_cart_item.quantity === 1) {
+        //
+        const remaining_items = useritems.filter((el) => el.id !== menu_id);
+        user.carts = [];
+        user.carts.push(...remaining_items);
+        await user.save({ validateBeforeSave: false });
+        // IF MORE THAN ONE QUANTITY REDUCE QUANTITY TO ONE
+      } else {
+        find_cart_item.quantity -= 1;
+        find_cart_item.total_price =
+          find_cart_item.price * find_cart_item.quantity;
+        const item_index = user.carts.findIndex((el) => el.id === menu_id);
+        useritems[item_index] = find_cart_item;
+        user.carts = [];
+        user.carts.push(...useritems);
+        await user.save({ validateBeforeSave: false });
+      }
+    } else {
+      return next(
+        new CustomError(
+          "There is no item with this menu ID in your cart. If this menu is still showing in your cart clear all carts",
+          404
+        )
+      );
+    }
+    res.status(204).json({
+      status: "success",
+      message: "Menu successfully removed from cart",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.remove_all_carts = async (req, res, next) => {
+  try {
+    const user = req.current_user;
+    user.carts = [];
+    await user.save({ validateBeforeSave: false });
+    res.status(204).json({
+      status: "success",
+      message: "Carts cleared successfully",
+    });
   } catch (err) {
     next(err);
   }
@@ -93,30 +235,3 @@ exports.restrict_restaurant = async (req, res, next) => {
     next(err);
   }
 };
-
-/*
-10000 meters is 15mins drive
-1000 meters is 1.5mins drive
-
-https://www.google.com/maps/place/WestGate+Life+Care/@6.6354826,3.3721295,17z/data=!3m1!4b1!4m6!3m5!1s0x103b933c80e55181:0xaa35162bafe00a1!8m2!3d6.6354773!4d3.3747044!16s%2Fg%2F11hz_3r1m_?entry=ttu
-
-https://www.google.com/maps/place/Guaranty+Trust+Bank+Olowora+Lagos/@6.6365493,3.3730715,17z/data=!4m14!1m7!3m6!1s0x103b939ec7bcc82d:0x355c2bf6899a372d!2sWestgate+Lifecare+Supermarket!8m2!3d6.6351053!4d3.3749812!16s%2Fg%2F11fy15qhkt!3m5!1s0x103b939bf08e04db:0x2afbc764ae1989c4!8m2!3d6.6369982!4d3.3739331!16s%2Fg%2F11cs6f5349?entry=ttu
-
-*/
-// https://maps.googleapis.com/maps/api/geocode/json?place_id=ChIJeRpOeF67j4AR9ydy_PIzPuM&key=
-
-// https://maps.googleapis.com/maps/api/geocode/json?address=lekki phase 2&key=
-
-// https://maps.googleapis.com/maps/api/geocode/json?address=1600+Amphitheatre+Parkway,+Mountain+View,+CA&key=
-
-// https://maps.googleapis.com/maps/api/geocode/json?latlng=40.714224,-73.961452&key=
-
-// https://maps.googleapis.com/maps/api/place/autocomplete/output?parameters
-/*
-https://maps.googleapis.com/maps/api/place/autocomplete/json
-  ?input=amoeba
-  &location=37.76999%2C-122.44696
-  &radius=500
-  &types=establishment
-  &key=YOUR_API_KEY
-*/
