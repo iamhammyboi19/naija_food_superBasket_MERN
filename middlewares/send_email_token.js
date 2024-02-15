@@ -9,8 +9,8 @@ exports.send_email_token = async (req, res, next) => {
   try {
     // take user from middleware
     let user;
-    user = req.new_user;
-    const { email_address } = req.body || req.new_user;
+    user = req.new_user || req.current_user;
+    const { email_address } = req.body || req.new_user || req.current_user;
 
     // if no user found try and get user through email address
     // if no user found regardless throw 404 error

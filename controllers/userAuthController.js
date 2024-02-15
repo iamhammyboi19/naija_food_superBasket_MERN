@@ -2,6 +2,7 @@
 /* eslint-disable indent */
 const { promisify } = require("util");
 const jwt = require("jsonwebtoken");
+const validator = require("email-validator");
 const CustomError = require("../utils/CustomError");
 const Email = require("../utils/email");
 const { hash_token_exp, createToken } = require("../utils/reuseables");
@@ -252,7 +253,7 @@ exports.protected_user = async (req, res, next) => {
 // reset password route
 exports.reset_password = async (req, res, next) => {
   try {
-    const { resetpasswordtoken } = req.params;
+    const { token: v_token } = req.params;
     const { password } = req.body;
 
     if (!password) {
@@ -260,7 +261,7 @@ exports.reset_password = async (req, res, next) => {
     }
 
     // hash the token
-    const hash_token = hash_token_exp(resetpasswordtoken);
+    const hash_token = hash_token_exp(v_token);
     //
     // console.log(
     //   await User.findOne({ passwordResetToken: hash_token }),
@@ -315,10 +316,7 @@ exports.forgot_password = async (req, res, next) => {
     const user = await User.findOne({ email_address });
     if (!user) {
       return next(
-        new CustomError(
-          `There is no user with this email address. Please check again and input the correct email address`,
-          404
-        )
+        new CustomError(`There is no user with this email address`, 404)
       );
     }
     const reset_pass_token = await user.reset_password_token();
@@ -329,8 +327,10 @@ exports.forgot_password = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     // const url = `${req.protocol}://${req.host}/confirm-user-account/${reset_pass_token}`;
-    // const url = `http://127.0.0.1:3000/api/v1/users/resetpassword/${reset_pass_token}`;
-    const url = `http://127.0.0.1:3000/resetpassword/${reset_pass_token}`;
+    const url = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/users/reset_password/${reset_pass_token}`;
+    // const url = `http://127.0.0.1:3000/reset_password/${reset_pass_token}`;
 
     try {
       await new Email().sendResetPassword(
@@ -338,12 +338,6 @@ exports.forgot_password = async (req, res, next) => {
         "Token expires in 10mins",
         url
       );
-
-      res.status(200).json({
-        status: "success",
-        message:
-          "Password token sent successfully. Please check your email and reset your password",
-      });
     } catch (err) {
       next(
         new CustomError(
@@ -352,6 +346,50 @@ exports.forgot_password = async (req, res, next) => {
         )
       );
     }
+
+    res.status(200).json({
+      status: "success",
+      message:
+        "Password token sent successfully. Please check your email and reset your password",
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+// UPDATE USER EMAIL ADDRESS BY SENDING TOKEN TO THEIR CURRENT EMAIL ADDRESS
+exports.update_email_address = async (req, res, next) => {
+  try {
+    //
+    const user = req.current_user;
+    const { email_address } = req.body;
+    const valid_email = validator.validate(email_address);
+    if (!valid_email) {
+      return next(
+        new CustomError(`${email_address} is not a valid email address`, 400)
+      );
+    }
+    const user_exists = await User.findOne({ email_address });
+    if (user_exists) {
+      return next(
+        new CustomError(
+          `User with the email address <${email_address}> you're trying to update already exists`,
+          400
+        )
+      );
+    }
+    const update_user = await User.findByIdAndUpdate(
+      user.id,
+      {
+        email_address,
+      },
+      { runValidators: true, new: true }
+    );
+    update_user.confirmed_user_email_address = false;
+    await update_user.save({ validateBeforeSave: false });
+    req.current_user = update_user;
+    next();
+    //
   } catch (err) {
     next(err);
   }

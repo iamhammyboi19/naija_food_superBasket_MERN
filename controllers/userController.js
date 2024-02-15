@@ -2,8 +2,7 @@ const User = require("../models/userModel");
 const Menu = require("../models/menuModel");
 const CustomError = require("../utils/CustomError");
 const ApiFeatures = require("../utils/apiFeatures");
-
-// const p = 100;
+// const { hash_token_exp } = require("../utils/reuseables");
 
 exports.get_all_users = async (req, res, next) => {
   try {
@@ -63,8 +62,12 @@ exports.add_product_to_cart = async (req, res, next) => {
       return next(new CustomError("Menu unavailable", 404));
     }
 
+    // GET COMPULSORY TOPPINGS that's set to true AND CHECK IF THEY ARE SELECTED
+    const compulsory_toppings = menu.toppings
+      ?.map((el) => (el.compulsory === true ? el.slug : ""))
+      .filter((el) => el !== "");
+
     const find_cart_item = user.carts?.filter((el) => el.id === menu_id)?.at(0);
-    console.log("find_cart_item", find_cart_item);
 
     // if there is same menu in cart already increment menu
     if (find_cart_item !== undefined || find_cart_item?.length > 0) {
@@ -86,6 +89,27 @@ exports.add_product_to_cart = async (req, res, next) => {
       // opts = [goat_meat, fanta]
       const tops = Object.keys(query);
       const opts = Object.values(query);
+
+      // CHECK IF COMPULSORY TOPPINGS ARE IN QUERY
+      let count = 0;
+      const comp_items = [];
+      compulsory_toppings.forEach((el) => {
+        if (tops.includes(el) === false) {
+          count = count + 1;
+          comp_items.push(el.split("_").join(" "));
+        }
+      });
+      if (count > 0) {
+        return next(
+          new CustomError(
+            `The toppings ${comp_items.join(" ")} ${
+              comp_items.length > 1 ? "are" : "is"
+            } compulsory please select an option`,
+            400
+          )
+        );
+      }
+
       // filter toppings_name in tops
       const filter_tops = menu.toppings.filter((el) => tops.includes(el.slug));
       // first map get options from each toppings and second map finds opts from the query inside the toppings
@@ -156,6 +180,7 @@ exports.remove_products_from_cart = async (req, res, next) => {
         const remaining_items = useritems.filter((el) => el.id !== menu_id);
         user.carts = [];
         user.carts.push(...remaining_items);
+        user.markModified("carts");
         await user.save({ validateBeforeSave: false });
         // IF MORE THAN ONE QUANTITY REDUCE QUANTITY TO ONE
       } else {
@@ -166,6 +191,7 @@ exports.remove_products_from_cart = async (req, res, next) => {
         useritems[item_index] = find_cart_item;
         user.carts = [];
         user.carts.push(...useritems);
+        user.markModified("carts");
         await user.save({ validateBeforeSave: false });
       }
     } else {
@@ -231,6 +257,54 @@ exports.restrict_restaurant = async (req, res, next) => {
       );
     }
     return next();
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.update_user = async (req, res, next) => {
+  try {
+    //
+    const user = req.current_user;
+    let update_user;
+    const {
+      name,
+      restaurant_name,
+      service_type,
+      business_reg_no,
+      password,
+      email_address,
+    } = req.body;
+    if (password || email_address) {
+      return next(
+        new CustomError(
+          "You cannot update your password or email address in this route",
+          400
+        )
+      );
+    }
+    if (user.role === "user") {
+      update_user = await User.findByIdAndUpdate(
+        user.id,
+        { name },
+        { runValidators: true, new: true }
+      );
+    }
+    if (user.role === "restaurant") {
+      update_user = await User.findByIdAndUpdate(user.id, {
+        name,
+        restaurant_name,
+        service_type,
+        business_reg_no,
+      });
+    }
+    res.status(200).json({
+      status: "success",
+      message: "User successfully updated",
+      data: {
+        user: update_user,
+      },
+    });
   } catch (err) {
     next(err);
   }

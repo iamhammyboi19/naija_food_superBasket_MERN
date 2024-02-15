@@ -82,7 +82,7 @@ const userSchema = new mongoose.Schema(
         },
         message: (props) => `${props.value} is not a valid phone number`,
       },
-      required: [true, "Please provide your phone number"],
+      // required: [true, "Please provide your phone number"],
     },
 
     confirmed_user_email_address: { type: Boolean, default: false },
@@ -91,6 +91,7 @@ const userSchema = new mongoose.Schema(
     confirm_user_phone_number_token: String,
     confirm_email_token_expires_at: Date,
     confirm_phone_token_expires_at: Date,
+    email_changed_at: Date,
     active: {
       type: Boolean,
       default: true,
