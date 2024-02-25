@@ -11,7 +11,7 @@ import {
 import { createPortal } from "react-dom";
 import { HiOutlineXMark } from "react-icons/hi2";
 import styled from "styled-components";
-import ActionButton from "./ActionButton";
+import IconsBackgroundTaker from "./IconsBackgroundTaker";
 
 const StyledModal = styled.div`
   position: fixed;
@@ -23,6 +23,9 @@ const StyledModal = styled.div`
   box-shadow: var(--shadow-lg);
   padding: 2rem 1.5rem 1rem 1.5rem;
   transition: all 0.5s;
+  @media (max-width: 45.1875em) {
+    width: 100%;
+  }
 `;
 
 const Overlay = styled.div`
@@ -35,6 +38,12 @@ const Overlay = styled.div`
   backdrop-filter: blur(4px);
   z-index: 1000;
   transition: all 0.5s;
+`;
+
+const IconBG = styled(IconsBackgroundTaker)`
+  height: 3rem;
+  width: 3rem;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 `;
 
 const ModalContext = createContext();
@@ -66,15 +75,16 @@ function Window({ children, name }) {
   useEffect(
     function () {
       function handleOutsideClick(e) {
-        if (ref.current.contains(e.target)) {
+        if (ref.current?.contains(e.target)) {
           return;
         }
         close();
       }
 
-      document.addEventListener("click", handleOutsideClick);
+      document.addEventListener("click", handleOutsideClick, true);
 
-      return () => document.removeEventListener("click", handleOutsideClick);
+      return () =>
+        document.removeEventListener("click", handleOutsideClick, true);
     },
     [close]
   );
@@ -89,17 +99,19 @@ function Window({ children, name }) {
         <span
           style={{
             position: "absolute",
-            right: "0%",
+            right: "3%",
             top: "3%",
+            zIndex: 999999999,
+            border: "none",
           }}
         >
-          <ActionButton
+          <IconBG
             onClick={() => close()}
             bg="var(--oc-gray-0)"
             bc="var(--oc-gray-0)"
           >
             <HiOutlineXMark color="#616161" fontSize={20} />
-          </ActionButton>
+          </IconBG>
         </span>
         {cloneElement(children, { onClose: close })}
       </StyledModal>

@@ -7,7 +7,7 @@ const StyledDashboard = styled.div`
 `;
 
 function Carts() {
-  return <StyledDashboard>Carts</StyledDashboard>;
+  return <StyledDashboard>CARTS</StyledDashboard>;
 }
 
 export default Carts;

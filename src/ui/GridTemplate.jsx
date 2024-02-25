@@ -20,7 +20,7 @@ const StyledGrid = styled.div`
     `}
 
     column-gap: ${(props) => props.$colsgap || "3rem"};
-  row-gap: 5rem;
+  row-gap: 4rem;
 
   @media (max-width: 65.625em) {
     ${(props) =>

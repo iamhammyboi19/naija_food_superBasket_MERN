@@ -2,7 +2,7 @@
 import styled, { css } from "styled-components";
 
 const StyledLabel = styled.label`
-  font-weight: 600;
+  font-weight: 400;
   font-size: 1.3rem;
   color: var(--oc-gray-8);
   cursor: default;
@@ -53,30 +53,16 @@ const StyledRadio = styled.input`
 
 const Wrapper = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 2rem;
   align-items: center;
-`;
-
-const InnerWrapper = styled.div`
-  display: flex;
-  ${(props) =>
-    props.$jc &&
-    css`
-      justify-content: space-between;
-    `}
-  gap: 1.5rem;
-  padding: 12px;
+  padding: 1rem;
   transition: all ease 0.3s;
   cursor: pointer;
   border-radius: var(--border-radius-sm);
   margin-bottom: 1rem;
-  width: 100%;
-  box-shadow: 0 0 0 1px var(--oc-gray-5);
-  background-color: var(--oc-gray-1);
 
   &:hover {
-    box-shadow: 0 0 0 2px var(--oc-gray-9);
-    background-color: var(--oc-white);
+    background-color: var(--oc-gray-1);
 
     & label {
       color: var(--oc-gray-8);
@@ -84,24 +70,19 @@ const InnerWrapper = styled.div`
   }
 `;
 
-function RadioInput({ children, jc }) {
+function RadioInputTypeII({ name, id, label, onChange, value }) {
   return (
-    <InnerWrapper $jc={jc}>
-      {/* <StyledRadio
+    <Wrapper>
+      <StyledRadio
         type="radio"
         name={name}
         id={id}
         onChange={onChange}
         value={value}
       />
-      <StyledLabel htmlFor={id}>{label}</StyledLabel> */}
-      {children}
-    </InnerWrapper>
+      <StyledLabel htmlFor={id}>{label}</StyledLabel>
+    </Wrapper>
   );
 }
 
-RadioInput.Label = StyledLabel;
-RadioInput.Input = StyledRadio;
-RadioInput.Wrapper = Wrapper;
-
-export default RadioInput;
+export default RadioInputTypeII;

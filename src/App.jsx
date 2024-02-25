@@ -5,7 +5,7 @@ import GlobalStyle from "./styles/GlobalStyles";
 // import HeaderNav from "./components/HeaderNav";
 // import { MantineProvider } from "@mantine/core";
 // import "@mantine/core/styles.css";
-import AppLayout from "./pages/AppLayout";
+import { AppLayout } from "./pages/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Restaurants from "./pages/Restaurants";
 import Signup from "./components/Signup";

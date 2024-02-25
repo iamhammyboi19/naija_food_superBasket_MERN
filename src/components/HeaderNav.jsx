@@ -4,10 +4,10 @@ import Logo from "./Logo";
 // import Search from "./Search";
 import ActionButton from "../ui/ActionButton";
 import { HiBars3, HiMiniMagnifyingGlass, HiXMark } from "react-icons/hi2";
-import useWindowSize from "../hooks/useWindowSize";
 // import Modal from "../ui/Modal";
 // import SliderShow from "./SliderShow";
 import { useEffect, useRef } from "react";
+import { useAppLayout } from "../pages/AppLayout";
 
 const MainHeader = styled.nav`
   padding: 1.6rem 3rem;
@@ -56,13 +56,14 @@ const SecondPart = styled.div`
   }
 `;
 
-function HeaderNav({
-  onSetNavHeight,
-  onSetAnimation,
-  startSlideShowAnimation,
-}) {
-  const { width } = useWindowSize();
-  const startHiding = width > 855;
+function HeaderNav() {
+  const {
+    onSetNavHeight,
+    onSetAnimation,
+    startSlideShowAnimation,
+    startHiding,
+  } = useAppLayout();
+
   const ref = useRef(null);
 
   useEffect(

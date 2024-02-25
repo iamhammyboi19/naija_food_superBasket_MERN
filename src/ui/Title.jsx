@@ -37,7 +37,7 @@ const StyledTitle = styled.h1`
       letter-spacing: 0.4px;
       font-weight: 600;
       color: var(--oc-gray-9);
-      margin-bottom: 2rem;
+      margin-bottom: 1rem;
     `}
 
   ${(props) =>

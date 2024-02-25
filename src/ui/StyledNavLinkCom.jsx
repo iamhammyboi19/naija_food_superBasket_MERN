@@ -1,6 +1,8 @@
 /* eslint-disable react/prop-types */
 import { NavLink } from "react-router-dom";
 import styled from "styled-components";
+import { useAppLayout } from "../pages/AppLayout";
+// import { useEffect } from "react";
 
 const StyledNavLink = styled(NavLink)`
   display: flex;
@@ -45,7 +47,34 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function StyledNavLinkCom({ children, to }) {
-  return <StyledNavLink to={to}>{children}</StyledNavLink>;
+  const { startHiding, onSetAnimation } = useAppLayout();
+
+  // useEffect(
+  //   function () {
+  //     function handleTitleChange() {
+  //       console.log(to);
+  //       // console.log(e.target);
+  //       // document.title = to;
+  //     }
+  //     document.addEventListener("click", handleTitleChange);
+
+  //     return () => document.removeEventListener("click", handleTitleChange);
+  //   },
+  //   [to]
+  // );
+
+  return (
+    <StyledNavLink
+      onClick={() => {
+        if (!startHiding) {
+          onSetAnimation(false);
+        }
+      }}
+      to={to}
+    >
+      {children}
+    </StyledNavLink>
+  );
 }
 
 export default StyledNavLinkCom;

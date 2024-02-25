@@ -4,6 +4,7 @@ import IconAndSideBarName from "../ui/IconAndSideBarName";
 import { HiHome, HiShoppingCart } from "react-icons/hi2";
 import { IoFastFoodSharp } from "react-icons/io5";
 import { MdPedalBike } from "react-icons/md";
+import { useAppLayout } from "../pages/AppLayout";
 
 const StyledSideBar = styled.div`
   height: 100%;
@@ -32,10 +33,11 @@ const StyledSideBar = styled.div`
   }
 `;
 
-function SideBar({ mt, startSlideShowAnimation, startHiding }) {
+function SideBar() {
+  const { startSlideShowAnimation, startHiding, navHeight } = useAppLayout();
   return (
     <StyledSideBar
-      $mt={mt}
+      $mt={navHeight}
       $ssa={startSlideShowAnimation.toString()}
       $sh={startHiding.toString()}
     >

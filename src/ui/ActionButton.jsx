@@ -10,20 +10,20 @@ const CallToAction = styled.button`
   border-radius: ${(props) => props.$br || ""};
   padding-right: ${(props) => props.$pr || ""};
   background-color: ${(props) => props.$bg || "var(--oc-gray-9)"};
-  display: flex;
+  /* display: flex;
   align-items: center;
   gap: 1rem;
+  justify-items: center;
+  text-align: center; */
 
   ${(props) =>
     props.$fw === "yes" &&
     css`
       width: 100%;
-    `}
-
-  @media (max-width: 48.125em) {
+    `}/* @media (max-width: 48.125em) {
     font-size: 12px;
     padding: 5px 10px;
-  }
+  } */
 `;
 
 function ActionButton({ children, fg, bg, bd, br, pr, fw }) {
