@@ -1,5 +1,5 @@
 import Search from "../components/Search";
-import CardsWithImage from "../components/CardsWithImage";
+import CardsWithImage from "../components/Restaurants/CardsWithImage";
 
 function Restaurants() {
   return (

@@ -52,6 +52,11 @@ function SideBar() {
         Icon={<IoFastFoodSharp fontSize={"20px"} color="var(--oc-gray-7)" />}
       />
       <IconAndSideBarName
+        sideBarName="Restaurant"
+        to="/restaurant"
+        Icon={<IoFastFoodSharp fontSize={"20px"} color="var(--oc-gray-7)" />}
+      />
+      <IconAndSideBarName
         sideBarName="Orders"
         to="/orders"
         Icon={<MdPedalBike fontSize={"20px"} color="var(--oc-gray-7)" />}

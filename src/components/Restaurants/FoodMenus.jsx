@@ -1,10 +1,10 @@
 import styled from "styled-components";
-import DescriptionText from "../ui/DescriptionText";
-import FlexSpaceBetween from "../ui/FlexSpaceBetween";
+import DescriptionText from "../../ui/DescriptionText";
+import FlexSpaceBetween from "../../ui/FlexSpaceBetween";
 import { HiOutlinePlus } from "react-icons/hi2";
-import IconsBackgroundTaker from "../ui/IconsBackgroundTaker";
-import Modal from "../ui/Modal";
-import AddToCartOverlay from "./AddToCartOverlay";
+import IconsBackgroundTaker from "../../ui/IconsBackgroundTaker";
+import Modal from "../../ui/Modal";
+import AddToCartOverlay from "../AddToCartOverlay";
 // import Title from "../../ui/Title";
 
 const Img = styled.img`

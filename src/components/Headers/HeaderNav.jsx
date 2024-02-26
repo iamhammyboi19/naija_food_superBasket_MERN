@@ -2,12 +2,12 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 // import Search from "./Search";
-import ActionButton from "../ui/ActionButton";
+import ActionButton from "../../ui/ActionButton";
 import { HiBars3, HiMiniMagnifyingGlass, HiXMark } from "react-icons/hi2";
 // import Modal from "../ui/Modal";
 // import SliderShow from "./SliderShow";
 import { useEffect, useRef } from "react";
-import { useAppLayout } from "../pages/AppLayout";
+import { useAppLayout } from "../../pages/AppLayout";
 
 const MainHeader = styled.nav`
   padding: 1.6rem 3rem;

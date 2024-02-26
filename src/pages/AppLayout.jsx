@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
 import SideBar from "../components/SideBar";
 import styled from "styled-components";
-import HeaderNav from "../components/HeaderNav";
+import HeaderNav from "../components/Headers/HeaderNav";
 import { createContext, useContext, useState } from "react";
 import useWindowSize from "../hooks/useWindowSize";
 

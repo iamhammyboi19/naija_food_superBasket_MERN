@@ -1,12 +1,12 @@
 import styled from "styled-components";
-import Title from "../ui/Title";
-import DescriptionText from "../ui/DescriptionText";
-import GridTemplate from "../ui/GridTemplate";
+import Title from "../../ui/Title";
+import DescriptionText from "../../ui/DescriptionText";
+import GridTemplate from "../../ui/GridTemplate";
 import { HiOutlineHeart } from "react-icons/hi2";
 import { HiMiniStar } from "react-icons/hi2";
-import IconsBackgroundTaker from "../ui/IconsBackgroundTaker";
-import FlexSpaceBetween from "../ui/FlexSpaceBetween";
-import FlexRow from "../ui/FlexRow";
+import IconsBackgroundTaker from "../../ui/IconsBackgroundTaker";
+import FlexSpaceBetween from "../../ui/FlexSpaceBetween";
+import FlexRow from "../../ui/FlexRow";
 
 // const Img = styled.img`
 //   max-width: 90%;

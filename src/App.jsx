@@ -8,12 +8,13 @@ import GlobalStyle from "./styles/GlobalStyles";
 import { AppLayout } from "./pages/AppLayout";
 import Dashboard from "./pages/Dashboard";
 import Restaurants from "./pages/Restaurants";
-import Signup from "./components/Signup";
-import Login from "./components/Login";
+import Signup from "./components/Auths/Signup";
+import Login from "./components/Auths/Login";
 import Error from "./components/Error";
 import { Toaster } from "react-hot-toast";
 import Order from "./pages/Order";
 import Carts from "./pages/Carts";
+import Restaurant from "./pages/Restaurant";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             ></Route>
             <Route path="/dashboard" element={<Dashboard />}></Route>
             <Route path="/restaurants" element={<Restaurants />}></Route>
+            <Route path="/restaurant" element={<Restaurant />}></Route>
             <Route path="/orders" element={<Order />}></Route>
             <Route path="/carts" element={<Carts />}></Route>
           </Route>

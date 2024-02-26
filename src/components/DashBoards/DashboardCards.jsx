@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import styled from "styled-components";
-import DescriptionText from "../ui/DescriptionText";
-import Title from "../ui/Title";
+import DescriptionText from "../../ui/DescriptionText";
+import Title from "../../ui/Title";
 
 const StyledDashboardCards = styled.div`
   padding: 2rem;

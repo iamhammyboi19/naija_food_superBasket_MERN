@@ -2,7 +2,7 @@
 import Title from "../ui/Title";
 import GridTemplate from "../ui/GridTemplate";
 // GridTemplate
-import DashboardCards from "../components/DashboardCards";
+import DashboardCards from "../components/DashBoards/DashboardCards";
 
 function Dashboard() {
   return (

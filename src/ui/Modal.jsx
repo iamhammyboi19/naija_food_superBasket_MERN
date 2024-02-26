@@ -105,11 +105,7 @@ function Window({ children, name }) {
             border: "none",
           }}
         >
-          <IconBG
-            onClick={() => close()}
-            bg="var(--oc-gray-0)"
-            bc="var(--oc-gray-0)"
-          >
+          <IconBG onClick={() => close()}>
             <HiOutlineXMark color="#616161" fontSize={20} />
           </IconBG>
         </span>
