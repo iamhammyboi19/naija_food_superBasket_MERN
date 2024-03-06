@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledOrderFirstFilter = styled.div`
@@ -7,6 +8,8 @@ const StyledOrderFirstFilter = styled.div`
   padding: 1px;
   border-radius: var(--border-radius-xlg);
   max-width: 30rem;
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 `;
 
 const OrderFilterParent = styled.div`
@@ -16,8 +19,9 @@ const OrderFilterParent = styled.div`
   justify-content: center;
   padding: 1rem;
   background-color: var(--oc-white);
-  box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px;
   border-radius: var(--border-radius-sm);
+  box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
+    rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
 `;
 
 const Button = styled.button`
@@ -39,8 +43,12 @@ const Button = styled.button`
 
 function OrderFirstFilter() {
   const [activeBtn, setActiveBtn] = useState("1");
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentStatus = searchParams.get("status") || "allorders";
   function handleActive(e) {
     setActiveBtn(e.target.id);
+    searchParams.set("status", this[0]);
+    setSearchParams(searchParams);
   }
   return (
     <div>
@@ -50,7 +58,10 @@ function OrderFirstFilter() {
             key="1"
             id="1"
             className={activeBtn === "1" ? "activebtn" : ""}
-            onClick={handleActive}
+            onClick={(e) => {
+              handleActive.bind(["allorders"])(e);
+            }}
+            disabled={currentStatus === "allorders"}
           >
             All Orders
           </Button>
@@ -58,7 +69,10 @@ function OrderFirstFilter() {
             key="2"
             id="2"
             className={activeBtn === "2" ? "activebtn" : ""}
-            onClick={handleActive}
+            onClick={(e) => {
+              handleActive.bind(["completed"])(e);
+            }}
+            disabled={currentStatus === "completed"}
           >
             Completed
           </Button>
@@ -66,7 +80,10 @@ function OrderFirstFilter() {
             key="3"
             id="3"
             className={activeBtn === "3" ? "activebtn" : ""}
-            onClick={handleActive}
+            onClick={(e) => {
+              handleActive.bind(["canceled"])(e);
+            }}
+            disabled={currentStatus === "canceled"}
           >
             Canceled
           </Button>

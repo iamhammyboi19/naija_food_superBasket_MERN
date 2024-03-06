@@ -1,4 +1,5 @@
 import OrderFirstFilter from "../components/Orders/OrderFirstFilter";
+import OrderList from "../components/Orders/OrderList";
 import OrderSecondFilter from "../components/Orders/OrderSecondFilter";
 
 function Order() {
@@ -6,6 +7,7 @@ function Order() {
     <div>
       <OrderFirstFilter />
       <OrderSecondFilter />
+      <OrderList />
     </div>
   );
 }

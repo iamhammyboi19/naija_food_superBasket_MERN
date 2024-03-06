@@ -16,6 +16,7 @@ const GlobalStyle = createGlobalStyle`
 /*  Gray
  *  ─────────────────────────────────── */
 
+  --oc-gray-05: #f9fafb;
   --oc-gray-0: #f8f9fa;
   --oc-gray-0-rgb: 248, 249, 250;
   --oc-gray-1: #f1f3f5;

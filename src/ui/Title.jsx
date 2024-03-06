@@ -14,7 +14,7 @@ const StyledTitle = styled.h1`
   ${(props) =>
     props.as === "h4" &&
     css`
-      font-size: 3rem;
+      font-size: 2rem;
       letter-spacing: 0.4px;
       margin-top: 0.5rem;
       color: var(--oc-gray-9);
@@ -46,7 +46,7 @@ const StyledTitle = styled.h1`
       font-size: 1.3rem;
       letter-spacing: 0.4px;
       margin-top: 0.5rem;
-      margin-bottom: 0.4rem;
+      margin-bottom: 12px;
       font-weight: 500;
       color: var(--oc-gray-7);
     `}

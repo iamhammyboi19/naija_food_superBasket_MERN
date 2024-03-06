@@ -19,7 +19,11 @@ const StyledOutlet = styled.div`
   max-width: 100%;
   margin-left: 320px;
   z-index: -99;
-  overflow: scroll;
+  /* overflow: scroll; */
+
+  @media (max-width: 56.25em) {
+    padding: 1.5rem 2rem;
+  }
 
   @media (max-width: 53.4375em) {
     margin-left: 0;

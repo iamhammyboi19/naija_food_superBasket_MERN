@@ -22,6 +22,12 @@ const InputContainer = styled.div`
     `}/* @media (max-width: 62.9375em) {
     width: 80%;
   }
+    @media (max-width: 73.75em) {
+    width: 100%;
+  }
+
+
+   73.75 
 
   @media (max-width: 55.9375em) {
     width: 80%;

@@ -17,19 +17,31 @@ const StyledDesText = styled.p`
   ${(props) =>
     props.$desc === "true" &&
     css`
-      font-size: 1.1rem;
-      color: var(--oc-gray-6);
+      font-size: 1.3rem;
+      color: var(--oc-gray-8);
       font-weight: 400;
+      letter-spacing: 0.5px;
+
+      @media (max-width: 31.25em) {
+        font-size: 1rem;
+        letter-spacing: 0.2px;
+      }
     `}
 
 
   ${(props) =>
     props.$desc === "bold" &&
     css`
-      font-size: 1.5rem;
-      color: var(--oc-gray-9);
-      font-weight: 500;
+      font-size: 1.2rem;
+      color: var(--oc-gray-8);
+      font-weight: 600;
       letter-spacing: 0.5px;
+      text-transform: uppercase;
+
+      @media (max-width: 31.25em) {
+        font-size: 1rem;
+        letter-spacing: 0.2px;
+      }
     `}
 
     ${(props) =>
@@ -54,10 +66,15 @@ const StyledDesText = styled.p`
     ${(props) =>
     props.$desc === "fade-bold" &&
     css`
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       color: var(--oc-gray-7);
       font-weight: 500;
       letter-spacing: 0.6px;
+
+      @media (max-width: 31.25em) {
+        font-size: 1rem;
+        letter-spacing: 0.2px;
+      }
     `}
 
     ${(props) =>

@@ -2,6 +2,7 @@
 import styled from "styled-components";
 import DescriptionText from "../../ui/DescriptionText";
 import Title from "../../ui/Title";
+import IconsBackgroundTaker from "../../ui/IconsBackgroundTaker";
 
 const StyledDashboardCards = styled.div`
   padding: 2rem;
@@ -10,13 +11,24 @@ const StyledDashboardCards = styled.div`
   background-color: var(--oc-white);
   box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px,
     rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+  display: flex;
+  gap: 2rem;
+  justify-items: center;
+  align-items: center;
 `;
 
-function DashboardCards({ title, desc }) {
+const NewIconBGK = styled(IconsBackgroundTaker)`
+  background-color: ${(props) => props.$bg};
+`;
+
+function DashboardCards({ title, desc, icon, bg }) {
   return (
     <StyledDashboardCards>
-      <DescriptionText desc="bold">{title}</DescriptionText>
-      <Title as="h4">{desc}</Title>
+      <NewIconBGK $bg={bg}>{icon}</NewIconBGK>
+      <div>
+        <DescriptionText desc="bold">{title}</DescriptionText>
+        <Title as="h4">{desc}</Title>
+      </div>
     </StyledDashboardCards>
   );
 }

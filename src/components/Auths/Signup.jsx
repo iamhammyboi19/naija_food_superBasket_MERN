@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import InnerLabelInputDiv from "../../ui/InnerLabelInputDiv";
 import InputText from "../../ui/InputText";
-import LongFormButton from "../../ui/LongFormButton";
+import { LongFormButton } from "../../ui/LongFormButton";
 import RadioInput from "../../ui/RadioInput";
 import { useState } from "react";
 import MaxWidthCenter from "../../ui/MaxWidthCenter";

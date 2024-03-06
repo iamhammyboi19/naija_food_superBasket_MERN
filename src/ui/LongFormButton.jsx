@@ -22,4 +22,4 @@ function LongFormButton({ children }) {
   return <StyledLongFormButton>{children}</StyledLongFormButton>;
 }
 
-export default LongFormButton;
+export { LongFormButton, StyledLongFormButton };
