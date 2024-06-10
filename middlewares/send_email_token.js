@@ -5,7 +5,7 @@ const Email = require("../utils/email");
 // use for next middleware after signup or resending email token
 // can also be used to resend email token to user
 // user is either passed from the signup req.new_user OR inputted manually i.e email_address
-exports.send_email_token = async (req, res, next) => {
+exports.send_email_token = (token_name) => async (req, res, next) => {
   try {
     // take user from middleware
     let user;
@@ -30,9 +30,19 @@ exports.send_email_token = async (req, res, next) => {
     const email_token = await user.confirm_email_token();
 
     // token url to be sent to email
-    const url = `${req.protocol}://${req.get("host")}${
-      req.originalUrl
-    }/${email_token}`;
+    // const url = `${req.protocol}://${req.get("host")}${
+    //   req.originalUrl
+    // }/${email_token}`;
+
+    let url;
+
+    if (token_name === "signup") {
+      url = `http://localhost:5173/confirmtoken/${email_token}`;
+    } else if (token_name === "reset_password") {
+      url = `http://localhost:5173/resetpassword/${email_token}`;
+    } else if (token_name === "update_email") {
+      url = `http://localhost:5173/update_email/${email_token}`;
+    }
 
     // send email verification
     try {
@@ -42,6 +52,7 @@ exports.send_email_token = async (req, res, next) => {
         url
       );
     } catch (err) {
+      console.log("send_email_token_err", err);
       next(
         new CustomError(
           `Error sending email verification token, please try again later`,

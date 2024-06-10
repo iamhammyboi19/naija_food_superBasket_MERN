@@ -1,6 +1,7 @@
 const multer = require("multer");
 const multer_S3 = require("multer-s3");
 const aws = require("aws-sdk");
+// const sharp = require("sharp");
 const CustomError = require("../utils/CustomError");
 
 aws.config.update({
@@ -33,8 +34,37 @@ const storage = multer_S3({
   contentType: multer_S3.AUTO_CONTENT_TYPE,
   // key should be the file name
   metadata: function (req, file, cb) {
+    // console.log("metadata", file);
     cb(null, { fieldName: file?.fieldname });
   },
+  // shouldTransform: function (req, file, cb) {
+  //   cb(null, /^image/i.test(file.mimetype));
+  // },
+  // transforms: [
+  //   {
+  //     id: "original",
+  //     key: (req, file, cb) => {
+  //       const rand = String(Math.random()).slice(2);
+  //       const fieldname = file.fieldname || "";
+  //       const file_name =
+  //         fieldname +
+  //         "_" +
+  //         Date.now() +
+  //         rand +
+  //         `.${file.mimetype.split("/")[1]}`;
+  //       req.file_name = file_name;
+  //       cb(
+  //         null,
+  //         // whateverthenameis.jpeg or whateverthenameis.png
+  //         file_name
+  //       );
+  //     },
+  //     transform: async function (req, file, cb) {
+  //       // Perform desired transformations
+  //       cb(null, await sharp().toFormat("jpeg").jpeg({ quality: 50 }));
+  //     },
+  //   },
+  // ],
   key: (req, file, cb) => {
     const rand = String(Math.random()).slice(2);
     const fieldname = file.fieldname || "";
@@ -50,6 +80,7 @@ const storage = multer_S3({
 });
 
 function fileFilter(req, file, cb) {
+  // console.log("fileFilter", file);
   // if the uploaded type is not an image throw error
   if (!file.mimetype.startsWith("image/")) {
     return cb(
@@ -69,6 +100,7 @@ const upload = multer({
 }).single("nfsB_images");
 
 module.exports = (req, res, next) => {
+  // console.log("upload", req.file);
   return upload(req, res, function (err) {
     if (err instanceof multer.MulterError) {
       // A Multer error occurred when uploading.

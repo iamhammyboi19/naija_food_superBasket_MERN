@@ -60,6 +60,7 @@ exports.update_menu = async (req, res, next) => {
       "price",
       "menu_desc",
     ]);
+
     if (req.file) {
       update_fields.menu_image = process.env.IMAGE_UPLOAD_URL + req.file_name;
     }
@@ -110,7 +111,8 @@ exports.delete_menu = async (req, res, next) => {
 exports.add_toppings = async (req, res, next) => {
   try {
     const { menu_id: id } = req.params;
-    const { toppings_name, compulsory } = req.body;
+    const { toppings_name, compulsory, min_selection, max_selection } =
+      req.body;
     const menu = await Menu.findById(id);
     if (!menu) {
       return next(new CustomError("No menu found with this id", 404));
@@ -131,7 +133,12 @@ exports.add_toppings = async (req, res, next) => {
         )
       );
     } else {
-      menu.toppings.push({ toppings_name, compulsory });
+      menu.toppings.push({
+        toppings_name,
+        compulsory,
+        min_selection,
+        max_selection,
+      });
       await menu.save();
       res.status(200).json({
         status: "success",
@@ -199,6 +206,8 @@ exports.update_menu_toppings = async (req, res, next) => {
     const update_fields = filter_update_obj(req.body, [
       "toppings_name",
       "compulsory",
+      "min_selection",
+      "max_selection",
     ]);
     toppings.set(update_fields);
     await menu.save();
@@ -431,6 +440,30 @@ exports.delete_toppings_opt = async (req, res, next) => {
       data: {
         menu,
       },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.get_all_menu_for_specific_restaurant = async (req, res, next) => {
+  try {
+    const { restaurant_id } = req.params;
+    const restaurant_menus = await Menu.find({ restaurant: restaurant_id });
+    if (!restaurant_menus || restaurant_menus.length === 0) {
+      return res.status(200).json({
+        status: "success",
+        message: "This restaurant has no menu posted yet",
+        available: false,
+      });
+    }
+    res.status(200).json({
+      available: true,
+      status: "success",
+      data: {
+        menus: restaurant_menus,
+      },
+      results: restaurant_menus?.length,
     });
   } catch (err) {
     next(err);

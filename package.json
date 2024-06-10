@@ -6,6 +6,9 @@
   "scripts": {
     "start:p": "NODE_ENV=production nodemon server.js",
     "start:d": "NODE_ENV=development nodemon server.js",
+    "setup-project": "npm i && cd client && npm i",
+    "setup-client": "cd client && npm i",
+    "client": "cd client && npm run dev",
     "debug": "ndb server.js"
   },
   "author": "iamhammyboi19",
@@ -13,8 +16,11 @@
   "dependencies": {
     "@react-email/components": "0.0.14",
     "@react-email/render": "^0.0.12",
+    "@syncfusion/ej2-react-layouts": "^25.1.37",
     "aws-sdk": "^2.1548.0",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.0",
     "email-validator": "^2.0.4",
     "express": "^4.18.2",
@@ -30,7 +36,9 @@
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.9.8",
     "phone": "^3.1.42",
+    "sharp": "^0.33.3",
     "slugify": "^1.6.6",
+    "stripe": "^14.20.0",
     "xss": "^1.0.14"
   },
   "devDependencies": {
@@ -38,6 +46,7 @@
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.29.1",
     "eslint-plugin-n": "^16.6.2",
-    "eslint-plugin-promise": "^6.1.1"
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.34.0"
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable indent */
+/* eslint-disable multiline-ternary */
 module.exports = class ApiFeatures {
   // query -> Model.find()
   // url_query_strings -> {price: 100}
@@ -20,7 +22,23 @@ module.exports = class ApiFeatures {
       (match) => `$${match}`
     );
 
-    this.query = this.query.find(JSON.parse(query_str));
+    // take the req.query and convert the string val to regex
+    // { restaurant_name: "Fake" }
+    // { restaurant_name: /Fake/ }
+    const query_str_keys = Object.keys(JSON.parse(query_str));
+    const query_str_vals = Object.values(JSON.parse(query_str)).map((val) =>
+      typeof val === "string" ? new RegExp(val) : val
+    );
+
+    const final_query = {};
+
+    query_str_keys.forEach((key, i) => {
+      final_query[key] = query_str_vals[i];
+    });
+
+    // console.log(final_query);
+
+    this.query = this.query.find(final_query);
     return this;
   }
 

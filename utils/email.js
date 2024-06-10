@@ -6,20 +6,21 @@ const HTML = require("../email_templates/html_template.js");
 module.exports = class Email {
   #transporter() {
     return nodemailer.createTransport({
-      host: "sandbox.smtp.mailtrap.io",
-      port: 587,
-      secure: false,
+      // host: "sandbox.smtp.mailtrap.io",
+      // port: 587,
+      // secure: false,
+      service: "Zoho",
       auth: {
         // TODO: replace `user` and `pass` values from <https://forwardemail.net>
-        user: process.env.EMAIL_USERNAME,
-        pass: process.env.EMAIL_PASSWORD,
+        user: process.env.ZOHO_USERNAME,
+        pass: process.env.ZOHO_PASSWORD,
       },
     });
   }
 
   async #sendMail(to, subject, url, action_message, header_message) {
     return await this.#transporter().sendMail({
-      from: "naijafoodsuperBasket", // sender address
+      from: "naijaFoodSuperBasket <naijafoodsuperbasket@zohomail.com>", // sender address
       to, // list of receivers
       subject, // Subject line
       text: action_message, // plain text body

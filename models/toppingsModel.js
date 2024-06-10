@@ -29,10 +29,12 @@ const toppingsSchema = new mongoose.Schema(
     },
     compulsory: {
       type: Boolean,
-      required: [true, "Please check if toppings is compulsory or not"],
+      required: [true, "Please check if toppings is optional or mandatory"],
     },
     slug: String,
     options: [toppingsOptionsSchema],
+    min_selection: { default: 1, type: Number },
+    max_selection: { default: 1, type: Number },
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );

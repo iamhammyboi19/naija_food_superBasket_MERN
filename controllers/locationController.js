@@ -12,7 +12,9 @@ exports.add_user_location_manually = async (req, res, next) => {
         )
       );
     }
+    user.location = [];
     user.location.push(req.body);
+    user.markModified("location");
     await user.save();
     res.status(200).json({
       status: "success",

@@ -4,7 +4,7 @@ module.exports = {
     node: true,
     commonjs: true,
   },
-  extends: "standard",
+  extends: ["standard", "plugin:react/recommended", "plugin:react/jsx-runtime"],
   overrides: [
     {
       env: {
@@ -23,6 +23,7 @@ module.exports = {
     quotes: "off",
     "comma-dangle": ["error", "only-multiline"],
     semi: ["error", "always"],
+    "multiline-ternary": ["error", "never"],
     camelcase: "off",
     "space-before-function-paren": [
       "error",

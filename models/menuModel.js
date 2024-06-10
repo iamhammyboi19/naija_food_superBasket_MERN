@@ -22,6 +22,7 @@ const menuSchema = new mongoose.Schema(
       required: [true, "Please give the menu a description eg ingredients"],
     },
     restaurant: { type: mongoose.ObjectId, ref: "User" },
+    // restaurant_name: { type: String },
     createdAt: {
       type: Date,
       default: new Date(Date.now()),
@@ -31,7 +32,19 @@ const menuSchema = new mongoose.Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 );
 
-// menuSchema.index({ restuarant: 1, menu_name: 1 }, { unique: true });
+menuSchema.index(
+  { restuarant: 1, menu_name: 1 },
+  { unique: true, sparse: true }
+);
+
+// menuSchema.pre("save", function (next) {
+//   const restructer_restaurant_name = this.restaurant_name
+//     .split(" ")
+//     .join("")
+//     .toLowerCase();
+//   this.restaurant_name = restructer_restaurant_name;
+//   next();
+// });
 
 const Menu = mongoose.model("Menu", menuSchema);
 

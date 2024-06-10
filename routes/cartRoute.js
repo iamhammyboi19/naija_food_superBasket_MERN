@@ -10,8 +10,11 @@ router.use(
 
 router
   .route("/:menu_id")
+  .patch(userController.increase_products_in_cart)
   .post(userController.add_product_to_cart)
-  .delete(userController.remove_products_from_cart);
+  .put(userController.decrease_products_from_cart)
+  .delete(userController.remove_cart);
+
 router.delete("/", userController.remove_all_carts);
 
 module.exports = router;

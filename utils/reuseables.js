@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const crypto = require("crypto");
+const moment = require("moment");
 const { promisify } = require("util");
 
 // generate 6 digit code and save hash to database
@@ -61,4 +62,46 @@ exports.filter_update_obj = (received_obj, fields_to_update) => {
     }
   });
   return obj;
+};
+
+exports.check_if_open = (
+  open_hour,
+  close_hour,
+  open_day_start,
+  open_day_end
+) => {
+  // get current time and extract year month and date
+  const time = new Date(Date.now());
+  const year = time.getFullYear();
+  const month = time.getMonth();
+  const day = time.getDate();
+  // check current day if it is in open day
+  const theday = time.getDay();
+
+  // take open and close time eg 10:00 17:00
+  // split and extract hours and minute of the current date
+  // use that to create everyday open and close hour
+  const close = close_hour.split(":").map((el) => Number(el));
+  const open = open_hour.split(":").map((el) => Number(el));
+  const close_hours = new Date(year, month, day, close.at(0), close.at(1));
+  const open_hours = new Date(year, month, day, open.at(0), open.at(1));
+
+  // use moment to check if open and close hour is active ie
+  // open hour must always be less than current time
+  // && closing hour must always be greater than current time
+  // current day must be within range of open days
+  const current_time = moment(time);
+  const closing_time = moment(close_hours);
+  const opening_time = moment(open_hours);
+
+  if (
+    closing_time.diff(current_time, "seconds") > 1 &&
+    current_time.diff(opening_time, "seconds") > 1 &&
+    theday >= Number(open_day_start) &&
+    theday <= Number(open_day_end)
+  ) {
+    return true;
+  } else {
+    return false;
+  }
 };

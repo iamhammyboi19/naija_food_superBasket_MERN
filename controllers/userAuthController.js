@@ -1,3 +1,4 @@
+/* eslint-disable multiline-ternary */
 /* eslint-disable operator-linebreak */
 /* eslint-disable indent */
 const { promisify } = require("util");
@@ -7,6 +8,17 @@ const CustomError = require("../utils/CustomError");
 const Email = require("../utils/email");
 const { hash_token_exp, createToken } = require("../utils/reuseables");
 const User = require("../models/userModel");
+
+const cookie_options = {
+  expires: new Date(
+    Date.now() + process.env.COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
+  ),
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production",
+  // sameSite: "None",
+};
+
+// console.log(cookie_options);
 
 exports.signup_user = async (req, res, next) => {
   try {
@@ -18,6 +30,8 @@ exports.signup_user = async (req, res, next) => {
       restaurant_name,
       business_reg_no,
       phone_number,
+      role,
+      service_type,
     } = req.body;
 
     // check if there is an existing user trying to signup
@@ -34,7 +48,7 @@ exports.signup_user = async (req, res, next) => {
     }
 
     const user =
-      restaurant_name && business_reg_no
+      restaurant_name && business_reg_no && role === "restaurant"
         ? await User.create({
             email_address,
             name,
@@ -43,6 +57,7 @@ exports.signup_user = async (req, res, next) => {
             business_reg_no,
             role: "restaurant",
             phone_number,
+            service_type,
           })
         : // if there is no restaurant name and business registration number provided signup as user
           await User.create({
@@ -78,6 +93,13 @@ exports.verify_email_token = async (req, res, next) => {
           401
         )
       );
+      // return res.status(200).json({
+      //   status: "success",
+      //   message:
+      //     "Token expired or used. Please request for a new email address verification token",
+      //   confirmed: false,
+      //   user: null,
+      // });
     }
 
     user.confirm_user_email_address_token = undefined;
@@ -86,13 +108,11 @@ exports.verify_email_token = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const token = await createToken(user._id);
-
+    res.cookie("jwt", token, cookie_options);
     res.status(200).json({
       status: "success",
       message: "User email address verification successful",
-      data: {
-        user,
-      },
+      user,
       token,
     });
   } catch (err) {
@@ -187,8 +207,7 @@ exports.login_user = async (req, res, next) => {
       const token = await createToken(user._id);
 
       // send cookie response
-      // res.cookie("jwt", token, cookiesOptions);
-
+      res.cookie("jwt", token, cookie_options);
       res.status(200).json({
         status: "success",
         message: "Logged in successfully",
@@ -203,12 +222,11 @@ exports.login_user = async (req, res, next) => {
 exports.protected_user = async (req, res, next) => {
   try {
     // check if there is token in req headers
-    const user_token = req.headers.authorization?.split(" ")[1];
-    // || req.cookies.jwt;
-
+    //
+    const user_token =
+      req.headers.authorization?.split(" ")[1] || req?.cookies?.jwt;
     //
 
-    // console.log(req.cookies.jwt);
     if (!user_token) {
       return next(
         new CustomError(
@@ -250,6 +268,54 @@ exports.protected_user = async (req, res, next) => {
   }
 };
 
+exports.protected_user_frontend = async (req, res, next) => {
+  try {
+    // check if there is token in req headers
+    const user_token =
+      req.headers.authorization?.split(" ")[1] || req?.cookies?.jwt;
+
+    //
+
+    // console.log(req.cookies.jwt);
+    if (!user_token) {
+      return res
+        .status(200)
+        .json({ status: "success", isAuthenticated: false, user: null });
+    }
+
+    // check and verfiy user_token
+    const user_verified = await promisify(jwt.verify)(
+      user_token,
+      process.env.JWT_SECRET
+    );
+
+    // find user with the id generated from verified token
+    const user = await User.findById(user_verified.id)
+      .populate("menus")
+      .populate("reviews");
+
+    if (!user) {
+      return res
+        .status(200)
+        .json({ status: "success", isAuthenticated: false, user: null });
+    }
+
+    // if the time token was created is less than the time password was changed throw error
+    if (await user.verify_user_jwt_created_time(user_verified.iat)) {
+      return res
+        .status(200)
+        .json({ status: "success", isAuthenticated: false, user: null });
+    }
+
+    return res
+      .status(200)
+      .json({ status: "success", isAuthenticated: true, user });
+    //
+  } catch (err) {
+    next(err);
+  }
+};
+
 // reset password route
 exports.reset_password = async (req, res, next) => {
   try {
@@ -284,13 +350,12 @@ exports.reset_password = async (req, res, next) => {
     user.password = password;
     user.password_reset_token = undefined;
     user.password_reset_token_expires_at = undefined;
-    await user.save({ validateBeforeSave: true });
+    await user.save({ validateBeforeSave: false });
 
     const token = await createToken(user._id);
 
     // send cookie response
-    // res.cookie("jwt", token, cookiesOptions);
-
+    res.cookie("jwt", token, cookie_options);
     res.status(200).json({
       status: "success",
       message: "Password succesfully updated",
@@ -327,10 +392,13 @@ exports.forgot_password = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     // const url = `${req.protocol}://${req.host}/confirm-user-account/${reset_pass_token}`;
-    const url = `${req.protocol}://${req.get(
-      "host"
-    )}/api/v1/users/reset_password/${reset_pass_token}`;
+    // const url = `${req.protocol}://${req.get(
+    //   "host"
+    // )}/api/v1/users/reset_password/${reset_pass_token}`;
     // const url = `http://127.0.0.1:3000/reset_password/${reset_pass_token}`;
+    //    const url = `http://localhost:5173/resetpassword/${reset_pass_token}`;
+
+    const url = `http://localhost:5173/resetpassword/${reset_pass_token}`;
 
     try {
       await new Email().sendResetPassword(
@@ -379,7 +447,7 @@ exports.update_email_address = async (req, res, next) => {
       );
     }
     const update_user = await User.findByIdAndUpdate(
-      user.id,
+      user._id,
       {
         email_address,
       },
@@ -390,6 +458,32 @@ exports.update_email_address = async (req, res, next) => {
     req.current_user = update_user;
     next();
     //
+  } catch (err) {
+    next(err);
+  }
+};
+
+exports.update_password = async (req, res, next) => {
+  try {
+    //
+    const user = req.current_user;
+    const { current_password, password } = req.body;
+    const get_user = await User.findById(user._id).select("+password");
+    if (
+      !(await get_user.compare_password(current_password, get_user.password))
+    ) {
+      return next(new CustomError("Current password is incorrect", 400));
+    }
+    get_user.password = password;
+    await get_user.save({ validateBeforeSave: true });
+
+    const token = await createToken(get_user._id);
+    res.cookie("jwt", token, cookie_options);
+    res.status(200).json({
+      status: "success",
+      message: "User password updated successfully",
+      token,
+    });
   } catch (err) {
     next(err);
   }

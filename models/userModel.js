@@ -31,6 +31,10 @@ const userSchema = new mongoose.Schema(
     restaurant_name: {
       type: String,
       trim: true,
+      lowercase: true,
+      // unique: true,
+      // sparse: true,
+      index: { unique: true, sparse: true },
       required: function () {
         return this.role === "restaurant";
       },
@@ -38,7 +42,30 @@ const userSchema = new mongoose.Schema(
 
     service_type: {
       type: String,
-      enum: ["delivery", "pickup", "delivery and pickup"],
+      enum: {
+        values: ["delivery", "pickup", "delivery and pickup"],
+        message: (props) => `${props.value} is not a valid service type`,
+      },
+      required: function () {
+        return this.role === "restaurant";
+      },
+    },
+
+    menu_overview: {
+      cover_photo: {
+        type: String,
+        default:
+          "https://productsawsbucket.s3.eu-north-1.amazonaws.com/menuz.png",
+      },
+      delivery_fee: { type: Number, default: 0 },
+      minimum_purchase: { type: Number, default: 0 },
+      // Sunday - Saturday : 0 - 6
+      open_day_start: { type: String, default: "1" },
+      open_day_end: { type: String, default: "5" },
+      open_hour: { type: String, default: "10:00" },
+      close_hour: { type: String, default: "20:00" },
+      open: { type: Boolean, default: false },
+      // closed: { trype: Boolean, default: true },
     },
 
     business_reg_no: {
@@ -75,7 +102,7 @@ const userSchema = new mongoose.Schema(
 
     phone_number: {
       type: String,
-      unique: true,
+      index: { unique: true, sparse: true },
       validate: {
         validator: function (val) {
           return phone(val).isValid;
@@ -107,6 +134,16 @@ const userSchema = new mongoose.Schema(
       },
     },
 
+    ratingsQuantity: {
+      type: Number,
+      default: 0,
+    },
+
+    ratingsAvg: {
+      type: Number,
+      default: 4.5,
+    },
+
     // locked account
     locked: {
       attempts: { type: Number, default: 0 },
@@ -130,11 +167,34 @@ const userSchema = new mongoose.Schema(
 
 // userSchema.path("phone_number").index({ sparse: true });
 
+userSchema.virtual("reviews", {
+  ref: "Review",
+  localField: "_id",
+  foreignField: "restaurant",
+});
+
+userSchema.virtual("menus", {
+  ref: "Menu",
+  localField: "_id",
+  foreignField: "restaurant",
+});
+
+userSchema.static("check_if_open", async function (res_id) {
+  //
+});
+
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next();
 
   this.password = await bcrypt.hash(this.password, 10);
   return next();
+});
+
+userSchema.pre("save", function (next) {
+  if (!this.isModified("password") || this.isNew) return next();
+
+  this.password_updated_at = Date.now() - 1000;
+  next();
 });
 
 // use to generate hash token for email verification
