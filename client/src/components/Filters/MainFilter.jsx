@@ -1,17 +1,16 @@
 /* eslint-disable multiline-ternary */
 /* eslint-disable react/prop-types */
 import { HiOutlinePlusCircle, HiOutlineXCircle } from "react-icons/hi2";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import FilterOptions from "./FilterOptions";
 import { useDispatch, useSelector } from "react-redux";
 import {
   hideFilter,
   removeFilterType,
-  // removeQuery,
   showFilter,
 } from "../../allRedux/filterSlice";
 import { useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Span = styled.span`
   font-size: 1.2rem;
@@ -20,12 +19,19 @@ const Span = styled.span`
   justify-items: center;
   gap: 5px;
   padding: 1px 9px;
-  border: 1px solid var(--oc-gray-4);
+  border: 1px solid var(--oc-gray-5);
   color: var(--oc-gray-6);
   font-weight: 500;
-  border-style: dashed;
+  /* border-style: ${(props) =>
+    props.$dash === "true" ? "outset" : "dashed"}; */
   border-radius: var(--border-radius-xlg);
   cursor: pointer;
+
+  ${(props) =>
+    props.$dash !== "true" &&
+    css`
+      border-style: dashed;
+    `}
 `;
 
 const StyledshowFilterDets = styled.span`
@@ -58,11 +64,7 @@ function MainFilter({
   aside,
   asideOptions,
 }) {
-  const {
-    open,
-    filterName: name,
-    queries,
-  } = useSelector((state) => state.filter);
+  const { open, filterName: name } = useSelector((state) => state.filter);
 
   //
   const dispatch = useDispatch();
@@ -90,17 +92,41 @@ function MainFilter({
     ?.at(0)
     ?.at(1);
 
-  const currentSearchParams2 = allSearchParamsArray.filter((el) =>
-    el?.at(0)?.startsWith(manipulatedFilterName)
-  );
+  // eg amount createdAt[gte]
+  const currentSearchParams2 = allSearchParamsArray
+    .filter((el) => el?.at(0)?.startsWith(manipulatedFilterName))
+    ?.at(0)
+    ?.at(0);
 
-  console.log("currentSearchParams2", currentSearchParams2);
+  // currentSearchParams2
+
+  useEffect(
+    function () {
+      if (currentSearchParams2 === undefined) {
+        setFilterType("");
+      } else if (
+        currentSearchParams2.endsWith("[lt]") &&
+        currentSearchParams2.startsWith("createdAt")
+      ) {
+        setFilterType("Last");
+      } else if (currentSearchParams2.endsWith("[lt]")) {
+        setFilterType("Less than");
+      } else if (currentSearchParams2.endsWith("[gt]")) {
+        setFilterType("More than");
+      } else if (currentSearchParams2 === "paymentmethod") {
+        setFilterType(currentSearchParams);
+      } else {
+        setFilterType("Exactly");
+      }
+    },
+    [currentSearchParams2, currentSearchParams]
+  );
 
   //
   return (
     <div>
-      <Span dash={currentSearchParams?.length > 0}>
-        {queries.includes(filterName) ? (
+      <Span $dash={(currentSearchParams?.length > 0).toString()}>
+        {currentSearchParams2 ? (
           <HiOutlineXCircle
             style={{
               color: "var(--oc-gray-6)",
@@ -113,7 +139,7 @@ function MainFilter({
               dispatch(removeFilterType());
               // remove query param from url
               setSearchParams((params) => {
-                params.delete(manipulatedFilterName);
+                params.delete(currentSearchParams2);
                 return params;
               });
             }}

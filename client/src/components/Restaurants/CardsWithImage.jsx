@@ -61,8 +61,10 @@ function CardsWithImage({
   restaurant_name,
   menu_overview,
   restaurant_id,
+  open,
 }) {
   const navigate = useNavigate();
+  // COMPARE CURRENT TIME TO OPEN/CLOSE TIME
   const current_time = moment(new Date(Date.now()));
   const open_time = moment(getCurrentDayTime(menu_overview.open_hour));
   const check_time = open_time.diff(current_time, "seconds");
@@ -94,6 +96,17 @@ function CardsWithImage({
                 ? "Free Shipping"
                 : `#${menu_overview.delivery_fee}`}
             </DescriptionText>
+            {!open && (
+              <span
+                style={{
+                  color: "var(--oc-red-9)",
+                  fontWeight: 900,
+                  fontSize: "10px",
+                }}
+              >
+                CLOSED
+              </span>
+            )}
           </FlexRow>
         </>
         {check_time > 1 && check_time <= 7200 && (

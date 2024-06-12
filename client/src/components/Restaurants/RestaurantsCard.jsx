@@ -33,6 +33,7 @@ function RestaurantsCard({ restaurant }) {
         {data.restaurants.map((restaurant) => (
           <CardsWithImage
             key={restaurant._id}
+            open={restaurant.open}
             ratings={restaurant.ratingsAvg}
             ratings_no={restaurant.ratingsQuantity}
             restaurant_name={restaurant.restaurant_name}

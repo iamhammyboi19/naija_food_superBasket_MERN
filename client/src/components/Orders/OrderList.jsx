@@ -1,9 +1,12 @@
 // import styled from "styled-components";
-// import Urder from "../../pages/Urder";
+import Urder from "../../pages/Urder";
 import { useNavigate } from "react-router-dom";
 import { FaReceipt } from "react-icons/fa6";
 import DescriptionText from "../../ui/DescriptionText";
 import ActionButton from "../../ui/ActionButton";
+import Spinner from "../../ui/Spinner";
+import SpinnerContainer from "../../ui/SpinnerContainer";
+import useOrders from "./useOrders";
 
 //
 // import DescriptionText from "../../ui/DescriptionText";
@@ -178,20 +181,19 @@ function EmptyOrder() {
 }
 
 function OrderList() {
-  // const [searchParams, setSearchParams] = useSearchParams();
-  // const allSearchParams = Object.fromEntries(
-  //   Array.from(searchParams).map((params) => params)
-  // );
-  // console.log(allSearchParams);
-
   // SHOW EACH ORDER LISTS
+  const { all_orders, isLoadingOrders } = useOrders();
+  console.log("all_orders", all_orders);
   return (
     <div style={{ marginTop: "40px" }}>
-      {/* <Urder /> */}
-      {/* <Urder />
-      <Urder />
-      <Urder /> */}
-      <EmptyOrder />
+      {all_orders?.length > 0 &&
+        all_orders.map((orders) => <Urder key={orders._id} orders={orders} />)}
+      {all_orders?.length === 0 && <EmptyOrder />}
+      {isLoadingOrders && (
+        <SpinnerContainer>
+          <Spinner />
+        </SpinnerContainer>
+      )}
     </div>
   );
 }

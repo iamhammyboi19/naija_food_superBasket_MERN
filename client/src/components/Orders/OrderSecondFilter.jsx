@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import InputContainer from "../../ui/InputSearchContainer";
-import InputSearch from "../../ui/InputSearch";
-import { HiMiniMagnifyingGlass } from "react-icons/hi2";
-import { useState } from "react";
+// import InputContainer from "../../ui/InputSearchContainer";
+// import InputSearch from "../../ui/InputSearch";
+// import { HiMiniMagnifyingGlass } from "react-icons/hi2";
+// import { useState } from "react";
 import MainFilter from "../Filters/MainFilter";
 
 const OrderFilterParent = styled.div`
@@ -13,6 +13,7 @@ const OrderFilterParent = styled.div`
   gap: 1rem;
   flex-wrap: wrap;
   align-items: center;
+  justify-content: center;
   background-color: var(--oc-white);
   /* box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px; */
   border-radius: var(--border-radius-sm);
@@ -60,10 +61,10 @@ const filters = [
 ];
 
 function OrderSecondFilter() {
-  const [searchTitle, setSearchTitle] = useState("");
+  // const [searchTitle, setSearchTitle] = useState("");
   return (
     <OrderFilterParent>
-      <InputContainer $w="40%" $bg="var(--oc-gray-1)">
+      {/* <InputContainer $w="40%" $bg="var(--oc-gray-1)">
         <HiMiniMagnifyingGlass
           style={{ color: "var(--oc-gray-8)", fontSize: "20px" }}
         />
@@ -73,7 +74,7 @@ function OrderSecondFilter() {
           onChange={(e) => setSearchTitle(e.target.value)}
           $bg="var(--oc-gray-1)"
         />
-      </InputContainer>
+      </InputContainer> */}
       {/* // FILTER BY DATE || AMOUNT || PAYMENT METHOD */}
       {filters.map((el) => (
         <MainFilter

@@ -1,3 +1,6 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable no-irregular-whitespace */
+/* eslint-disable react/prop-types */
 // import {
 //   Body,
 //   Container,

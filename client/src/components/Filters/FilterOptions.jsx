@@ -67,7 +67,7 @@ function FilterOptions({
   showInput = false,
   aside,
   asideOptions,
-  setFilterType,
+  // setFilterType,
 }) {
   // USE FOR FILTER OVERLAY
   const ref = useRef(null);
@@ -120,27 +120,27 @@ function FilterOptions({
     if (selectOpt === "Exactly") {
       searchParams.set(manipulatedFilterName, new_inputVal);
       setSearchParams(searchParams);
-      setFilterType(selectOpt);
+      // setFilterType(selectOpt);
     } else if (selectOpt === "Less than" || selectOpt === "Last") {
       searchParams.set(`${manipulatedFilterName}[lt]`, new_inputVal);
       setSearchParams(searchParams);
-      setFilterType(selectOpt);
+      // setFilterType(selectOpt);
     } else if (selectOpt === "Less or Equal") {
       searchParams.set(`${manipulatedFilterName}[lte]`, new_inputVal);
       setSearchParams(searchParams);
-      setFilterType(selectOpt);
+      // setFilterType(selectOpt);
     } else if (selectOpt === "More than") {
       searchParams.set(`${manipulatedFilterName}[gt]`, new_inputVal);
       setSearchParams(searchParams);
-      setFilterType(selectOpt);
+      // setFilterType(selectOpt);
     } else if (selectOpt === "Greater or Equal") {
       searchParams.set(`${manipulatedFilterName}[gte]`, new_inputVal);
       setSearchParams(searchParams);
-      setFilterType(selectOpt);
+      // setFilterType(selectOpt);
     } else {
       searchParams.set(`${manipulatedFilterName}`, selectOpt);
       setSearchParams(searchParams);
-      setFilterType(selectOpt);
+      // setFilterType(selectOpt);
     }
   }
 

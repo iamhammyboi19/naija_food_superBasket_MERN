@@ -104,7 +104,6 @@ export async function verify_email_reset_password_token(token, data) {
 
 export async function get_all_restaurants(query_str) {
   try {
-    console.log("query_str.length", query_str.length);
     const res = await (query_str.length > 0
       ? axios({
           method: "get",

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const StyledSelect = styled.select`
-  font-size: 1.4rem;
+  font-size: 14px;
   padding: 12px;
   background-color: var(--oc-gray-1);
   border: 1px solid

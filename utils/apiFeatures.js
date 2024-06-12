@@ -12,6 +12,7 @@ module.exports = class ApiFeatures {
     //
     const query_obj = { ...this.url_query_strings };
     // is it not possible to query with { sort: { $price : "asc" } }
+    // it has to be Query.sort('field -test');
     const remove_queries = ["sort", "limit", "page", "fields"];
     remove_queries.forEach((el) => delete query_obj[el]);
 

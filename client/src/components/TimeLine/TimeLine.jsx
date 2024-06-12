@@ -24,7 +24,7 @@ order confirmed
 order ready
 rider pickup
 order delivered
-order canceled
+order canceled -> stage 0
 */
 
 function TimeLine() {

@@ -46,7 +46,7 @@ module.exports = class Email {
     action_message = "Click here to reset your password",
     header_message = "Reset your password"
   ) {
-    console.log(url);
+    // console.log(url);
     return this.#sendMail(to, subject, url, action_message, header_message);
   }
 };

@@ -44,7 +44,7 @@ const Button = styled.button`
 function OrderFirstFilter() {
   const [activeBtn, setActiveBtn] = useState("1");
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentStatus = searchParams.get("status") || "allorders";
+  const currentStatus = searchParams.get("status") || "neworders";
 
   // FILTER ALL ORDERS || ONGOING ORDERS || NEW ORDER etc
   function handleActive(e) {
@@ -106,11 +106,11 @@ function OrderFirstFilter() {
             id="5"
             className={activeBtn === "5" ? "activebtn" : ""}
             onClick={(e) => {
-              handleActive.bind(["canceled"])(e);
+              handleActive.bind(["cancelled"])(e);
             }}
-            disabled={currentStatus === "canceled"}
+            disabled={currentStatus === "cancelled"}
           >
-            Canceled
+            Cancelled
           </Button>
         </StyledOrderFirstFilter>
       </OrderFilterParent>

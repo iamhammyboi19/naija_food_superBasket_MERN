@@ -34,6 +34,7 @@ exports.get_all_users = async (req, res, next) => {
 
 exports.get_all_restaurants = async (req, res, next) => {
   try {
+    console.log("req.query", req.query);
     const doc = new ApiFeatures(
       User.find({
         role: "restaurant",

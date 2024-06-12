@@ -38,7 +38,14 @@ function RestaurantHeader({ restaurant, menu_overview }) {
           <strong>{restaurant.ratingsAvg}</strong>
         </span>
         <HiMiniStar />
-        <DescriptionText desc="true">{`(${restaurant.ratingsQuantity})`}</DescriptionText>
+        <DescriptionText desc="true">
+          {`(${restaurant.ratingsQuantity})`}{" "}
+        </DescriptionText>
+        {!restaurant.open && (
+          <span style={{ color: "var(--oc-red-9)", fontWeight: 900 }}>
+            CLOSED
+          </span>
+        )}
       </FlexRow>
     </div>
   );

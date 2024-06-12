@@ -2,6 +2,8 @@
 import styled, { css } from "styled-components";
 import DescriptionText from "../../ui/DescriptionText";
 import ActionButton from "../../ui/ActionButton";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 const FlexDiv = styled.div`
   display: flex;
@@ -41,6 +43,8 @@ function CartCheckout({ carts, showbtn = false }) {
     carts?.length > 0 &&
     carts.map((cart) => cart.total_price).reduce((x, y) => x + y, 0);
 
+  const navigate = useNavigate();
+
   return (
     <StyledCartCheckout>
       <FlexDiv $pdt="yes">
@@ -56,7 +60,19 @@ function CartCheckout({ carts, showbtn = false }) {
         <DescriptionText desc="bold">#{total_price || "0.00"}</DescriptionText>
       </FlexDiv>
 
-      {showbtn && <ActionButton>Checkout</ActionButton>}
+      {showbtn && (
+        <ActionButton
+          onClick={() => {
+            if (carts?.length < 1) {
+              toast.error("You have no items in the carts to check out");
+            } else {
+              navigate("/carts/checkout");
+            }
+          }}
+        >
+          Checkout
+        </ActionButton>
+      )}
     </StyledCartCheckout>
   );
 }
