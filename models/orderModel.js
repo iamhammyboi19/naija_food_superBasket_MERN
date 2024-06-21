@@ -33,6 +33,7 @@ const orderSchema = new mongoose.Schema({
   reason_for_cancel: { type: String, default: null },
   stage: { type: Number, default: 1 },
   cancelled_stage: { type: Number, default: null },
+  automatically_cancelled: { type: Boolean, default: false },
 });
 
 const Order = mongoose.model("order", orderSchema);

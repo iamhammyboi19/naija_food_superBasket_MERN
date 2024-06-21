@@ -11,6 +11,10 @@ const StyledSelect = styled.select`
   /* background-color: var(--oc-gray-0); */
   font-weight: 500;
   box-shadow: var(--shadow-sm);
+
+  &:focus {
+    outline: none;
+  }
 `;
 
 export default StyledSelect;

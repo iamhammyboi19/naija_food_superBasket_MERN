@@ -44,7 +44,7 @@ const Button = styled.button`
 function OrderFirstFilter() {
   const [activeBtn, setActiveBtn] = useState("1");
   const [searchParams, setSearchParams] = useSearchParams();
-  const currentStatus = searchParams.get("status") || "neworders";
+  const currentStatus = searchParams.get("status") || "allorders";
 
   // FILTER ALL ORDERS || ONGOING ORDERS || NEW ORDER etc
   function handleActive(e) {
@@ -62,6 +62,17 @@ function OrderFirstFilter() {
             id="1"
             className={activeBtn === "1" ? "activebtn" : ""}
             onClick={(e) => {
+              handleActive.bind(["allorders"])(e);
+            }}
+            disabled={currentStatus === "allorders"}
+          >
+            All Orders
+          </Button>
+          <Button
+            key="2"
+            id="2"
+            className={activeBtn === "2" ? "activebtn" : ""}
+            onClick={(e) => {
               handleActive.bind(["neworders"])(e);
             }}
             disabled={currentStatus === "neworders"}
@@ -69,9 +80,9 @@ function OrderFirstFilter() {
             New
           </Button>
           <Button
-            key="2"
-            id="2"
-            className={activeBtn === "2" ? "activebtn" : ""}
+            key="3"
+            id="3"
+            className={activeBtn === "3" ? "activebtn" : ""}
             onClick={(e) => {
               handleActive.bind(["ongoingorders"])(e);
             }}
@@ -79,17 +90,7 @@ function OrderFirstFilter() {
           >
             Ongoing
           </Button>
-          <Button
-            key="3"
-            id="3"
-            className={activeBtn === "3" ? "activebtn" : ""}
-            onClick={(e) => {
-              handleActive.bind(["allorders"])(e);
-            }}
-            disabled={currentStatus === "allorders"}
-          >
-            All Orders
-          </Button>
+
           <Button
             key="4"
             id="4"

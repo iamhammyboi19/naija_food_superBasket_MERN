@@ -21,7 +21,7 @@ import ConfirmToken from "./pages/ConfirmToken";
 import Menu from "./pages/Menu";
 import ResetPassword from "./pages/ResetPassword";
 import Account from "./pages/Account";
-import Urder from "./pages/Urder";
+import AllOrders from "./pages/AllOrders";
 import Checkout from "./pages/Checkout";
 // import LineTime from "./pages/LineTime";
 
@@ -66,7 +66,7 @@ function App() {
               <Route path="/carts/checkout" element={<Checkout />}></Route>
               <Route path="/map" element={<Map />}></Route>
               <Route path="/account" element={<Account />}></Route>
-              <Route path="/logout" element={<Urder />}></Route>
+              <Route path="/logout" element={<AllOrders />}></Route>
             </Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>

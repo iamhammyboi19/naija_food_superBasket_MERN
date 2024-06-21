@@ -204,7 +204,7 @@ exports.get_specific_order = async (req, res, next) => {
     // IF ORDER IS NOT ACCEPTED AUTOMATICALLY CANCEL
     if (
       order.automatically_cancel_unaccepted_order_at !== null &&
-      order.automatically_cancel_unaccepted_order_at > Date.now()
+      Date.now() > order.automatically_cancel_unaccepted_order_at
     ) {
       order.automatically_cancel_unaccepted_order_at = null;
       order.stage = 0;
@@ -213,6 +213,7 @@ exports.get_specific_order = async (req, res, next) => {
       order.status = "cancelled";
       order.current_order_status = "order_cancelled";
       order.cancelled = true;
+      order.automatically_cancelled = true;
       order.reason_for_cancel =
         "Automatically cancelled by the system because restaurant did not accept order on time";
       await order.save({ validateBeforeSave: false });
@@ -266,6 +267,7 @@ exports.update_order_status = async (req, res, next) => {
       order.cancelled_stage = order.stage;
       order.reason_for_cancel = order_cancel_reason;
       order.stage = 0;
+      order.automatically_cancelled = false;
       order.current_order_status = "order_cancelled";
     }
 
@@ -322,6 +324,7 @@ exports.reject_order = async (req, res, next) => {
     order.status = "cancelled";
     order.current_order_status = "order_cancelled";
     order.cancelled = true;
+    order.automatically_cancelled = false;
     order.reason_for_cancel = "Order rejected by the restaurant";
     await order.save({ validateBeforeSave: false });
 

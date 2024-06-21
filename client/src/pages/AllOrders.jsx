@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import styled from "styled-components";
 import ActionButton from "../ui/ActionButton";
 import DescriptionText from "../ui/DescriptionText";
@@ -16,7 +17,7 @@ const StyledOrderBack = styled.div`
   margin-bottom: 2rem;
 `;
 
-function Urder() {
+function AllOrders({ order }) {
   return (
     <StyledOrderBack>
       <FlexRow>
@@ -31,10 +32,10 @@ function Urder() {
             br="var(--border-radius-xlg)"
             fg="var(--oc-gray-7)"
             pd="0.5rem 1.3rem"
+            fs="1rem"
             fontW={500}
-            fs="0.8rem"
           >
-            Moi moi
+            {order.order_data.items_number} item(s)
           </ActionButton>
           <ActionButton
             bd="var(--oc-gray-3)"
@@ -42,18 +43,7 @@ function Urder() {
             br="var(--border-radius-xlg)"
             fg="var(--oc-gray-7)"
             pd="0.5rem 1.3rem"
-            fs="0.8rem"
-            fontW={500}
-          >
-            3 items
-          </ActionButton>
-          <ActionButton
-            bd="var(--oc-gray-3)"
-            bg="var(--oc-gray-3)"
-            br="var(--border-radius-xlg)"
-            fg="var(--oc-gray-7)"
-            pd="0.5rem 1.3rem"
-            fs="0.8rem"
+            fs="1rem"
             fontW={500}
           >
             Card
@@ -64,10 +54,10 @@ function Urder() {
             br="var(--border-radius-xlg)"
             fg="var(--oc-gray-7)"
             pd="0.5rem 1.3rem"
-            fs="0.8rem"
+            fs="1rem"
             fontW={500}
           >
-            Completed
+            {order.status}
           </ActionButton>
           <ActionButton
             bd="var(--oc-gray-3)"
@@ -75,10 +65,10 @@ function Urder() {
             br="var(--border-radius-xlg)"
             fg="var(--oc-gray-7)"
             pd="0.5rem 1.3rem"
-            fs="0.8rem"
+            fs="1rem"
             fontW={500}
           >
-            Price
+            #{order.amount}
           </ActionButton>
         </FlexRow>
         <FlexRow gap="0.5rem">
@@ -96,7 +86,7 @@ function Urder() {
               </ActionButton>
             </Modal.Open>
             <Modal.Window mw="yes" pd="2rem 0" name="order">
-              <OrderOverLay />
+              <OrderOverLay order={order} />
             </Modal.Window>
           </Modal>
           <ActionButton
@@ -116,4 +106,4 @@ function Urder() {
   );
 }
 
-export default Urder;
+export default AllOrders;

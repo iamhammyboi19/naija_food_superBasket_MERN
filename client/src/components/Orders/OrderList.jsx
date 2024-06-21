@@ -1,5 +1,5 @@
 // import styled from "styled-components";
-import Urder from "../../pages/Urder";
+import AllOrders from "../../pages/AllOrders";
 import { useNavigate } from "react-router-dom";
 import { FaReceipt } from "react-icons/fa6";
 import DescriptionText from "../../ui/DescriptionText";
@@ -183,11 +183,10 @@ function EmptyOrder() {
 function OrderList() {
   // SHOW EACH ORDER LISTS
   const { all_orders, isLoadingOrders } = useOrders();
-  console.log("all_orders", all_orders);
   return (
     <div style={{ marginTop: "40px" }}>
       {all_orders?.length > 0 &&
-        all_orders.map((orders) => <Urder key={orders._id} orders={orders} />)}
+        all_orders.map((order) => <AllOrders key={order._id} order={order} />)}
       {all_orders?.length === 0 && <EmptyOrder />}
       {isLoadingOrders && (
         <SpinnerContainer>
