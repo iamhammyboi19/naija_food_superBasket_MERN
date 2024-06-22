@@ -43,7 +43,7 @@ const IconBG = styled(IconsBackgroundTaker)`
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 `;
 
-function FoodMenus({ menu }) {
+function FoodMenus({ menu, restaurant_name }) {
   return (
     <StyledFoodMenu>
       <FlexSpaceBetween>
@@ -73,7 +73,7 @@ function FoodMenus({ menu }) {
             </IconBG>
           </Modal.Open>
           <Modal.Window name="addtocart" mw="yes">
-            <AddToCartOverlay menu={menu} />
+            <AddToCartOverlay menu={menu} restaurant_name={restaurant_name} />
           </Modal.Window>
         </Modal>
       </FlexSpaceBetween>

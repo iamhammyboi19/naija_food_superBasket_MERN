@@ -269,7 +269,10 @@ exports.update_order_status = async (req, res, next) => {
       order.stage = 0;
       order.automatically_cancelled = false;
       order.current_order_status = "order_cancelled";
+      order.cancelled = true;
     }
+
+    await order.save({ validateBeforeSave: false });
 
     res.status(200).json({
       status: "success",
@@ -296,6 +299,7 @@ exports.accept_order = async (req, res, next) => {
     order.status = "ongoingorders";
     order.current_order_status = "order_confirmed";
     order.stage = 2;
+    order.automatically_cancel_unaccepted_order_at = null;
     await order.save({ validateBeforeSave: false });
 
     res.status(200).json({

@@ -31,7 +31,7 @@ const StyledAddToCartOverlay = styled.div`
   }
 `;
 
-function AddToCartOverlay({ menu }) {
+function AddToCartOverlay({ menu, restaurant_name }) {
   // check if current menu is in user cart so to avoid duplicate addition
   // tho this is already handled in the API
   const { user } = useUser();
@@ -55,6 +55,7 @@ function AddToCartOverlay({ menu }) {
         menu_id={menu._id}
         menu_in_cart={menu_in_cart !== undefined}
         cart={menu_in_cart}
+        restaurant_name={restaurant_name}
       />
     </StyledAddToCartOverlay>
   );

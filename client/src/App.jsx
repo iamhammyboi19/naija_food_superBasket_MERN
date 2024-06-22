@@ -7,7 +7,7 @@ import Signup from "./components/Auths/Signup";
 import Login from "./components/Auths/Login";
 import Error from "./components/Error";
 import { Toaster } from "react-hot-toast";
-import Order from "./pages/Order";
+import Orders from "./pages/Orders";
 import Carts from "./pages/Carts";
 import Restaurant from "./pages/Restaurant";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -21,8 +21,9 @@ import ConfirmToken from "./pages/ConfirmToken";
 import Menu from "./pages/Menu";
 import ResetPassword from "./pages/ResetPassword";
 import Account from "./pages/Account";
-import AllOrders from "./pages/AllOrders";
+// import AllOrders from "./pages/AllOrders";
 import Checkout from "./pages/Checkout";
+import OrderDetails from "./pages/OrderDetails";
 // import LineTime from "./pages/LineTime";
 
 const queryClient = new QueryClient({
@@ -61,12 +62,16 @@ function App() {
               ></Route>
               <Route path="/menus" element={<Menus />}></Route>
               <Route path="/menus/:menu_id" element={<Menu />}></Route>
-              <Route path="/orders" element={<Order />}></Route>
+              <Route path="/orders" element={<Orders />}></Route>
+              <Route
+                path="/orders/:order_id"
+                element={<OrderDetails />}
+              ></Route>
               <Route path="/carts" element={<Carts />}></Route>
               <Route path="/carts/checkout" element={<Checkout />}></Route>
               <Route path="/map" element={<Map />}></Route>
               <Route path="/account" element={<Account />}></Route>
-              <Route path="/logout" element={<AllOrders />}></Route>
+              {/* <Route path="/logout" element={<AllOrders />}></Route> */}
             </Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>

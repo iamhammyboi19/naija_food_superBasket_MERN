@@ -104,7 +104,9 @@ function OrderOverLay({ order }) {
   const { is_updating_order, update_order_api } = useUpdateOrder();
 
   // SELECT STATE
-  const [selectStatus, setSelectStatus] = useState("order_ready");
+  const [selectStatus, setSelectStatus] = useState(
+    cur_order?.current_order_status || "order_ready"
+  );
 
   // COUNT DOWN TIME
   const auto_cancel_at = moment(
@@ -193,36 +195,39 @@ function OrderOverLay({ order }) {
             </FlexSpaceBetween>
           </StyledBorder>
 
-          {cur_order.stage > 1 && (
-            <FlexSpaceBetween mt="2.5rem">
-              <Select
-                disabled={isLoading}
-                onChange={(e) => {
-                  setSelectStatus(e.target.value);
-                }}
-              >
-                {order_status_aval_updates.map((stat) => (
-                  <option key={stat.value} value={stat.value}>
-                    {stat.name}
-                  </option>
-                ))}
-              </Select>
-              <ActionButton
-                bg="var(--oc-green-7)"
-                bd="var(--oc-green-7)"
-                br="var(--border-radius-xlg)"
-                disabled={isLoading}
-                onClick={() => {
-                  update_order_api({
-                    order_id: order._id,
-                    data: { order_status: selectStatus },
-                  });
-                }}
-              >
-                Update
-              </ActionButton>
-            </FlexSpaceBetween>
-          )}
+          {cur_order.stage > 1 &&
+            !cur_order.cancelled &&
+            cur_order.status !== "completed" &&
+            cur_order.status !== "cancelled" && (
+              <FlexSpaceBetween mt="2.5rem">
+                <Select
+                  disabled={isLoading}
+                  onChange={(e) => {
+                    setSelectStatus(e.target.value);
+                  }}
+                >
+                  {order_status_aval_updates.map((stat) => (
+                    <option key={stat.value} value={stat.value}>
+                      {stat.name}
+                    </option>
+                  ))}
+                </Select>
+                <ActionButton
+                  bg="var(--oc-green-7)"
+                  bd="var(--oc-green-7)"
+                  br="var(--border-radius-xlg)"
+                  disabled={isLoading}
+                  onClick={() => {
+                    update_order_api({
+                      order_id: order._id,
+                      data: { order_status: selectStatus },
+                    });
+                  }}
+                >
+                  Update
+                </ActionButton>
+              </FlexSpaceBetween>
+            )}
 
           <FlexSpaceBetween mt="2.5rem">
             <DescriptionText desc="true">

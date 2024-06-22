@@ -21,7 +21,7 @@ const StyledAddToCartBsk = styled.div`
   background-color: var(--oc-white);
 `;
 
-function AddToCartBsk({ menu_id, menu_in_cart, cart }) {
+function AddToCartBsk({ menu_id, menu_in_cart, cart, restaurant_name }) {
   const { quantity, toppings, note } = useSelector((state) => state.addtocart);
   const dispatch = useDispatch();
 
@@ -29,7 +29,7 @@ function AddToCartBsk({ menu_id, menu_in_cart, cart }) {
   // const { remove_all_cart_api, is_removing_all_carts } = useDeleteAllcarts();
   const { remove_cart_api, is_removing_cart } = useDeleteCart();
 
-  const data = { quantity, toppings, note };
+  const data = { quantity, toppings, note, restaurant_name };
 
   const isLoading = is_adding_to_cart || is_removing_cart;
 

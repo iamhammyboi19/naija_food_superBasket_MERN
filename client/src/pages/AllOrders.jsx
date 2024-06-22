@@ -7,6 +7,8 @@ import FlexSpaceBetween from "../ui/FlexSpaceBetween";
 import Modal from "../ui/Modal";
 import OrderOverLay from "../components/Orders/OrderOverLay";
 import { GrView } from "react-icons/gr";
+import useUser from "../components/Auths/useUser";
+import { useNavigate } from "react-router-dom";
 
 const StyledOrderBack = styled.div`
   /* width: max-content; */
@@ -18,6 +20,8 @@ const StyledOrderBack = styled.div`
 `;
 
 function AllOrders({ order }) {
+  const { role } = useUser();
+  const navigate = useNavigate();
   return (
     <StyledOrderBack>
       <FlexRow>
@@ -72,23 +76,25 @@ function AllOrders({ order }) {
           </ActionButton>
         </FlexRow>
         <FlexRow gap="0.5rem">
-          <Modal>
-            <Modal.Open opens="order">
-              <ActionButton
-                bd="var(--oc-yellow-3)"
-                bg="var(--oc-yellow-3)"
-                br="var(--border-radius-xlg)"
-                fg="var(--oc-gray-7)"
-                pd="0.5rem 1.3rem"
-                fs="1.2rem"
-              >
-                Details
-              </ActionButton>
-            </Modal.Open>
-            <Modal.Window mw="yes" pd="2rem 0" name="order">
-              <OrderOverLay order={order} />
-            </Modal.Window>
-          </Modal>
+          {role === "restaurant" && (
+            <Modal>
+              <Modal.Open opens="order">
+                <ActionButton
+                  bd="var(--oc-yellow-3)"
+                  bg="var(--oc-yellow-3)"
+                  br="var(--border-radius-xlg)"
+                  fg="var(--oc-gray-7)"
+                  pd="0.5rem 1.3rem"
+                  fs="1.2rem"
+                >
+                  Details
+                </ActionButton>
+              </Modal.Open>
+              <Modal.Window mw="yes" pd="2rem 0" name="order">
+                <OrderOverLay order={order} />
+              </Modal.Window>
+            </Modal>
+          )}
           <ActionButton
             bd="var(--oc-yellow-3)"
             bg="var(--oc-yellow-3)"
@@ -96,6 +102,9 @@ function AllOrders({ order }) {
             fg="var(--oc-gray-7)"
             pd="0.5rem 1.3rem"
             flex="yes"
+            onClick={() => {
+              navigate(`/orders/${order._id}`);
+            }}
             // fs="1.2rem"
           >
             <GrView />

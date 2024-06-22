@@ -62,7 +62,11 @@ function Restaurant() {
           {menus.length > 0 && (
             <GridTemplate disabled={!restaurant.open} cols={2}>
               {menus.map((menu) => (
-                <FoodMenus key={menu._id} menu={menu} />
+                <FoodMenus
+                  key={menu._id}
+                  menu={menu}
+                  restaurant_name={restaurant?.restaurant_name}
+                />
               ))}
             </GridTemplate>
           )}

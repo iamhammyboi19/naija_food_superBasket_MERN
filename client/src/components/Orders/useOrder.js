@@ -8,7 +8,5 @@ export default function useOrder(order_id) {
     queryFn: () => get_specific_order_fe(order_id),
   });
 
-  console.log("useOrder-data", data);
-
   return { cur_order: data?.data, isLoadingCurOrder };
 }

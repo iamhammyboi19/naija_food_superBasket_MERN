@@ -120,7 +120,7 @@ exports.add_product_to_cart = async (req, res, next) => {
   try {
     //
     const { menu_id } = req.params;
-    const { quantity, toppings, note } = req.body;
+    const { quantity, toppings, note, restaurant_name } = req.body;
     const user = req.current_user;
 
     // const query = req.query;
@@ -220,6 +220,7 @@ exports.add_product_to_cart = async (req, res, next) => {
       price: menu.price + toppings_price,
       note: note || "",
       quantity,
+      restaurant_name,
     };
 
     cart_menu.total_price = cart_menu.price * cart_menu.quantity;

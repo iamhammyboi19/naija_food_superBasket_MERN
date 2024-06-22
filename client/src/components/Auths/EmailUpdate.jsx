@@ -50,6 +50,7 @@ function EmailUpdate() {
         width="100%"
         nc="yes"
         btnName={"Save Changes"}
+        restrict_submit={true}
       >
         <InnerLabelInputDiv>
           <label>Email address</label>

@@ -35,13 +35,24 @@ const IconStyle = {
   color: "var(--oc-gray-6)",
 };
 
-function TimeLineItem({ content, state, contentDesc, time, current }) {
+function TimeLineItem({
+  content,
+  state,
+  contentDesc,
+  time,
+  current,
+  cancelled_at,
+  cancelled_desc,
+}) {
   return (
     <StyledTimeLineItem $state={state} className="timelineitem">
       {current && (
         <MdCircle style={{ ...IconStyle, color: "var(--oc-yellow-6)" }} />
       )}
       {!current && state === "false" && <MdCircle style={{ ...IconStyle }} />}
+      {cancelled_at === "true" && (
+        <AiFillCheckCircle style={{ ...IconStyle, color: "var(--oc-red-6)" }} />
+      )}
       {state === "true" && (
         <AiFillCheckCircle
           style={{ ...IconStyle, color: "var(--oc-green-6)" }}
@@ -50,7 +61,9 @@ function TimeLineItem({ content, state, contentDesc, time, current }) {
       <DescriptionText desc="true2">
         {content || "Order placed"}
       </DescriptionText>
-      <DescriptionText desc="tiny">{contentDesc || ""}</DescriptionText>
+      <DescriptionText desc="tiny">
+        {contentDesc || cancelled_desc || ""}
+      </DescriptionText>
       <DescriptionText desc="semi-tiny-s">{time || ""}</DescriptionText>
     </StyledTimeLineItem>
   );
