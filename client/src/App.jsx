@@ -11,7 +11,7 @@ import Orders from "./pages/Orders";
 import Carts from "./pages/Carts";
 import Restaurant from "./pages/Restaurant";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Map from "./pages/Map";
+// import Map from "./pages/Map";
 import Menus from "./pages/Menus";
 import Confirmation from "./pages/Confirmation";
 import RequestEmail from "./pages/RequestEmail";
@@ -24,6 +24,7 @@ import Account from "./pages/Account";
 // import AllOrders from "./pages/AllOrders";
 import Checkout from "./pages/Checkout";
 import OrderDetails from "./pages/OrderDetails";
+import Logout from "./pages/Logout";
 // import LineTime from "./pages/LineTime";
 
 const queryClient = new QueryClient({
@@ -69,9 +70,9 @@ function App() {
               ></Route>
               <Route path="/carts" element={<Carts />}></Route>
               <Route path="/carts/checkout" element={<Checkout />}></Route>
-              <Route path="/map" element={<Map />}></Route>
+              {/* <Route path="/map" element={<Map />}></Route> */}
               <Route path="/account" element={<Account />}></Route>
-              {/* <Route path="/logout" element={<AllOrders />}></Route> */}
+              <Route path="/logout" element={<Logout />}></Route>
             </Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>

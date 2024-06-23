@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 const mongoose = require("mongoose");
 
 process.on("uncaughtException", (err) => {
@@ -5,7 +6,7 @@ process.on("uncaughtException", (err) => {
   process.exit(1);
 });
 
-const dotenv = require("dotenv").config({ path: "config.env" });
+require("dotenv").config({ path: "config.env" });
 const app = require("./app");
 
 const port = process.env.PORT;
@@ -32,7 +33,6 @@ process.on("unhandledRejection", function () {
     });
   };
 });
-
 
 /*
 require('dotenv').config({path: __dirname + '/../.env'})

@@ -35,6 +35,22 @@ export async function loginUser(data) {
   }
 }
 
+export async function logoutUser(data) {
+  try {
+    const res = await axios({
+      method: "delete",
+      url: `/api/v1/users/logout`,
+      data,
+    });
+
+    if (res.data.status === "success") {
+      return res.data;
+    }
+  } catch (err) {
+    throw new Error(String(err.response.data.message));
+  }
+}
+
 export async function get_current_user_from_cookie() {
   try {
     const res = await axios({

@@ -269,6 +269,7 @@ exports.update_order_status = async (req, res, next) => {
       order.stage = 0;
       order.automatically_cancelled = false;
       order.current_order_status = "order_cancelled";
+      order.status = "cancelled";
       order.cancelled = true;
     }
 

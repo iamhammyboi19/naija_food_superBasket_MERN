@@ -36,6 +36,10 @@ router.patch(
 router.patch("/update_me", multer_imgs_upload, userController.update_user);
 router.patch("/update_password", userAuthController.update_password);
 
+router
+  .route("/logout")
+  .delete(userAuthController.protected_user, userAuthController.logout_user);
+
 module.exports = router;
 // Guaranty+Trust+Bank+Olowora+Lagos/@6.6370035,3.3713582
 // 750m

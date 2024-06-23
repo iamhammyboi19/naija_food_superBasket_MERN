@@ -6,6 +6,8 @@ import { AiFillCheckCircle } from "react-icons/ai";
 // AiFillCloseCircle
 // import { FaCircle } from "react-icons/fa";
 import { MdCircle } from "react-icons/md";
+import { IoMdCloseCircle } from "react-icons/io";
+
 // import { RiRecordCircleFill } from "react-icons/ri";
 
 const StyledTimeLineItem = styled.div`
@@ -51,7 +53,14 @@ function TimeLineItem({
       )}
       {!current && state === "false" && <MdCircle style={{ ...IconStyle }} />}
       {cancelled_at === "true" && (
-        <AiFillCheckCircle style={{ ...IconStyle, color: "var(--oc-red-6)" }} />
+        <IoMdCloseCircle
+          style={{
+            ...IconStyle,
+            color: "var(--oc-red-6)",
+            backgroundColor: "#fff",
+            overflow: "hidden",
+          }}
+        />
       )}
       {state === "true" && (
         <AiFillCheckCircle

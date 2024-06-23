@@ -5,7 +5,7 @@ import IconAndSideBarName from "../ui/IconAndSideBarName";
 import { HiHome, HiShoppingCart, HiUserCircle } from "react-icons/hi2";
 // import { SlSettings } from "react-icons/sl";
 // import { AiFillSetting } from "react-icons/ai";
-// import { IoLogOut } from "react-icons/io5";
+import { IoLogOut } from "react-icons/io5";
 
 import { IoFastFoodSharp } from "react-icons/io5";
 import { MdPedalBike } from "react-icons/md";
@@ -85,21 +85,21 @@ function SideBar() {
         Icon={<MdPedalBike fontSize={"20px"} color="var(--oc-gray-7)" />}
       />
 
-      <IconAndSideBarName
+      {/* <IconAndSideBarName
         sideBarName="Map"
         to="/map"
         Icon={<HiShoppingCart fontSize={"20px"} color="var(--oc-gray-7)" />}
-      />
+      /> */}
       <IconAndSideBarName
         sideBarName="Account"
         to="/account"
         Icon={<HiUserCircle fontSize={"20px"} color="var(--oc-gray-7)" />}
       />
-      {/* <IconAndSideBarName
+      <IconAndSideBarName
         sideBarName="Logout"
         to="/logout"
         Icon={<IoLogOut fontSize={"20px"} color="var(--oc-gray-7)" />}
-      /> */}
+      />
     </StyledSideBar>
   );
 }

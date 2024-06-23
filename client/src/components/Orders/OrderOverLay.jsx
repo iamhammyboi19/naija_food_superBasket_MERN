@@ -105,7 +105,7 @@ function OrderOverLay({ order }) {
 
   // SELECT STATE
   const [selectStatus, setSelectStatus] = useState(
-    cur_order?.current_order_status || "order_ready"
+    cur_order?.current_order_status
   );
 
   // COUNT DOWN TIME
