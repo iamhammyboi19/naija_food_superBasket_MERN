@@ -10,6 +10,7 @@ export default defineConfig({
         target: "https://naija-food-super-basket-backend-api.vercel.app/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
+        secure: false,
       },
       // "/api": "http://127.0.0.1:8080",
     },
