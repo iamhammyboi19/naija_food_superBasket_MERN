@@ -15,7 +15,7 @@ const cookie_options = {
   ),
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: "none",
+  sameSite: "None",
 };
 
 // console.log(cookie_options);
