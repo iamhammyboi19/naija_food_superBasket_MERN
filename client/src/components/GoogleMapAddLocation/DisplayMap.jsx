@@ -22,7 +22,7 @@ import {
   MarkerF,
 } from "@react-google-maps/api";
 import useGetCurrentPosition from "../../hooks/useGeolocation";
-import { GOOGLE_MAP_APIKEY } from "../../config";
+// import { GOOGLE_MAP_APIKEY } from "../../config";
 
 import usePlacesAutocomplete, {
   getGeocode,
@@ -195,7 +195,7 @@ function ShowMap() {
   const libRef = useRef(libraries);
 
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: GOOGLE_MAP_APIKEY,
+    googleMapsApiKey: import.meta.env.GOOGLE_MAP_APIKEY,
     libraries: libRef.current,
   });
 
