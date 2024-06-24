@@ -1,7 +1,9 @@
 import axios from "axios";
 
-const usersBaseUrl = "/api/v1/users";
-const menusBaseUrl = "/api/v1/menus";
+const usersBaseUrl =
+  "https://naija-food-super-basket-backend-api.vercel.app/api/v1/users";
+const menusBaseUrl =
+  "https://naija-food-super-basket-backend-api.vercel.app/api/v1/menus";
 
 export async function signupUser(data) {
   try {
