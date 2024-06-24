@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios/dist/axios";
 
 const cartsBaseUrl = "/api/v1/carts";
 

@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "axios/dist/axios";
 
 const menusBaseUrl = "/api/v1/menus";
 
