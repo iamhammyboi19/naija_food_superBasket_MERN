@@ -12,30 +12,45 @@ const errorController = require("./controllers/errorController");
 
 const app = express();
 
-// const whitelist = ["http://localhost:5173"];
-// const corsOptions = {
-//   origin: function (origin, callback) {
-//     if (whitelist.indexOf(origin) !== -1) {
-//       callback(null, true);
-//     } else {
-//       callback(new CustomError("Not allowed by CORS", 401));
-//     }
-//   },
-// };
+const whitelist = [
+  "http://localhost:5173",
+  "https://naija-food-super-basket-mern-frontend.vercel.app",
+];
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (whitelist.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      callback(new CustomError("Not allowed by CORS", 401));
+    }
+  },
+  methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+  allowedHeaders: [
+    "Access-Control-Allow-Origin",
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+  ],
+  credentials: true,
+};
 
 // origin: [
 //   "https://naija-food-super-basket-mern-frontend.vercel.app",
 //   "http://localhost:5173",
 // ],
+// https://naija-food-super-basket-mern-frontend.vercel.app/
 
-const corsOptions = {
-  origin: "https://naija-food-super-basket-mern-frontend.vercel.app",
-  credentials: true,
-  optionSuccessStatus: 200,
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
-};
+// const corsOptions = {
+//   origin: "https://naija-food-super-basket-mern-frontend.vercel.app",
+//   credentials: true,
+//   optionSuccessStatus: 200,
+//   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],
+// };
 
 app.use(cookieParser());
+app.options("*", cors(corsOptions));
 app.use(cors(corsOptions));
 
 app.use(express.json({ limit: "10kb" }));
