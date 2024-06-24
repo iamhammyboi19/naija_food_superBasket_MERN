@@ -35,13 +35,20 @@ exports.send_email_token = (token_name) => async (req, res, next) => {
     // }/${email_token}`;
 
     let url;
+    let host;
+
+    if (process.env.NODE_ENV === "production") {
+      host = "https://naija-food-super-basket-mern-frontend.vercel.app";
+    } else {
+      host = "http://localhost:5173";
+    }
 
     if (token_name === "signup") {
-      url = `http://localhost:5173/confirmtoken/${email_token}`;
+      url = `${host}/confirmtoken/${email_token}`;
     } else if (token_name === "reset_password") {
-      url = `http://localhost:5173/resetpassword/${email_token}`;
+      url = `${host}/resetpassword/${email_token}`;
     } else if (token_name === "update_email") {
-      url = `http://localhost:5173/update_email/${email_token}`;
+      url = `${host}/update_email/${email_token}`;
     }
 
     // send email verification

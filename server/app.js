@@ -23,8 +23,13 @@ const app = express();
 //   },
 // };
 
+// origin: [
+//   "https://naija-food-super-basket-mern-frontend.vercel.app",
+//   "http://localhost:5173",
+// ],
+
 const corsOptions = {
-  origin: "https://naija-food-super-basket-backend-api.vercel.app/",
+  origin: "https://naija-food-super-basket-mern-frontend.vercel.app",
   credentials: true,
   optionSuccessStatus: 200,
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE", "OPTIONS"],

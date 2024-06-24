@@ -398,7 +398,15 @@ exports.forgot_password = async (req, res, next) => {
     // const url = `http://127.0.0.1:3000/reset_password/${reset_pass_token}`;
     //    const url = `http://localhost:5173/resetpassword/${reset_pass_token}`;
 
-    const url = `http://localhost:5173/resetpassword/${reset_pass_token}`;
+    let host;
+
+    if (process.env.NODE_ENV === "production") {
+      host = "https://naija-food-super-basket-mern-frontend.vercel.app";
+    } else {
+      host = "http://localhost:5173";
+    }
+
+    const url = `${host}/resetpassword/${reset_pass_token}`;
 
     try {
       await new Email().sendResetPassword(
