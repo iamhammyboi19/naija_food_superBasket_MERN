@@ -25,7 +25,7 @@ export async function loginUser(data) {
   try {
     const res = await axios({
       method: "post",
-      url: `/api/v1/users/login`,
+      url: `${usersBaseUrl}/api/v1/users/login`,
       data,
     });
 
@@ -41,7 +41,7 @@ export async function logoutUser(data) {
   try {
     const res = await axios({
       method: "delete",
-      url: `/api/v1/users/logout`,
+      url: `${usersBaseUrl}/api/v1/users/logout`,
       data,
     });
 
@@ -88,7 +88,7 @@ export async function verify_email_signup_token(token) {
   try {
     const res = await axios({
       method: "get",
-      url: `/api/v1/users/signup/${token}`,
+      url: `${usersBaseUrl}/api/v1/users/signup/${token}`,
     });
 
     // console.log("res", res);
