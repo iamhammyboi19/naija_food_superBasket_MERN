@@ -215,6 +215,7 @@ function Signup() {
             marginTop: "20px",
             fontWeight: 600,
             gap: "5px",
+            alignItems: "center",
           }}
         >
           <DescriptionText desc="true">
