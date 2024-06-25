@@ -8,8 +8,8 @@ export default function useLogin() {
   const { isPending, mutate } = useMutation({
     mutationFn: ({ data }) => loginUser(data),
     onSuccess: ({ message }) => {
-      toast.success(message);
-      setTimeout(() => navigate("/dashboard"), 2500);
+      toast.success(message, { duration: 2000 });
+      setTimeout(() => navigate("/dashboard"), 3000);
     },
     onError: (err) => {
       console.log(err);

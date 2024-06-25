@@ -7,9 +7,9 @@ const StyledMaxWidthCenter = styled.div`
 `;
 
 // eslint-disable-next-line react/prop-types
-function MaxWidthCenter({ children, mw, mt }) {
+function MaxWidthCenter({ children, mw, mt, pd }) {
   return (
-    <StyledMaxWidthCenter $mw={mw} $mt={mt}>
+    <StyledMaxWidthCenter $mw={mw} $mt={mt} $pd={pd}>
       {children}
     </StyledMaxWidthCenter>
   );
