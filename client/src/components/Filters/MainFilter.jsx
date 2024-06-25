@@ -105,7 +105,7 @@ function MainFilter({
       if (currentSearchParams2 === undefined) {
         setFilterType("");
       } else if (
-        currentSearchParams2.endsWith("[lt]") &&
+        currentSearchParams2.endsWith("[lte]") &&
         currentSearchParams2.startsWith("createdAt")
       ) {
         setFilterType("Last");

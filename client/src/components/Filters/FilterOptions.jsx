@@ -107,13 +107,13 @@ function FilterOptions({
       new_inputVal = inputVal;
     } else if (additionalFilter === "days") {
       // CONVERT DAYS TO MILLISECONDS
-      new_inputVal = inputVal * 86400000;
+      new_inputVal = Date.now() - inputVal * 86400000;
     } else if (additionalFilter === "weeks") {
       // CONVERT WEEKS TO MILLISECONDS
-      new_inputVal = inputVal * 604800000;
+      new_inputVal = Date.now() - inputVal * 604800000;
     } else if (additionalFilter === "hours") {
       // CONVERT HOURS TO MILLISECONDS
-      new_inputVal = inputVal * 3600000;
+      new_inputVal = Date.now() - inputVal * 3600000;
     }
 
     // CHECK EACH SELECT OPTION BASED ON FILTER TYPE
@@ -121,10 +121,13 @@ function FilterOptions({
       searchParams.set(manipulatedFilterName, new_inputVal);
       setSearchParams(searchParams);
       // setFilterType(selectOpt);
-    } else if (selectOpt === "Less than" || selectOpt === "Last") {
+    } else if (selectOpt === "Less than") {
       searchParams.set(`${manipulatedFilterName}[lt]`, new_inputVal);
       setSearchParams(searchParams);
       // setFilterType(selectOpt);
+    } else if (selectOpt === "Last") {
+      searchParams.set(`${manipulatedFilterName}[lte]`, new_inputVal);
+      setSearchParams(searchParams);
     } else if (selectOpt === "Less or Equal") {
       searchParams.set(`${manipulatedFilterName}[lte]`, new_inputVal);
       setSearchParams(searchParams);

@@ -10,13 +10,18 @@ const StyledOrderFirstFilter = styled.div`
   width: max-content;
   box-shadow: rgba(0, 0, 0, 0.02) 0px 1px 3px 0px,
     rgba(27, 31, 35, 0.15) 0px 0px 0px 1px;
+
+  @media (max-width: 21.875em) {
+    padding: 0px;
+  }
 `;
 
 const OrderFilterParent = styled.div`
-  margin: 15px auto 15px auto;
+  margin: 1.5rem auto 1.5rem auto;
   width: 100%;
   display: flex;
   justify-content: center;
+  align-content: center;
   padding: 1rem;
   background-color: var(--oc-white);
   border-radius: var(--border-radius-sm);
@@ -38,6 +43,12 @@ const Button = styled.button`
     background-color: var(--oc-white);
     box-shadow: rgba(60, 64, 67, 0.3) 0px 0.5px 1px 0px,
       rgba(60, 64, 67, 0.15) 0px 0.5px 1.5px 0.5px;
+  }
+
+  /* 21.875 */
+  @media (max-width: 21.875em) {
+    padding: 1rem 1rem;
+    font-size: 1rem;
   }
 `;
 

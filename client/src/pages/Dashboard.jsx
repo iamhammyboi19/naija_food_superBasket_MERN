@@ -15,13 +15,14 @@ import Spinner from "../ui/Spinner";
 function Dashboard() {
   const { user } = useUser();
   const { all_orders, isLoadingOrders } = useOrders();
-  const amount = all_orders
-    ?.map((item) => item.amount)
-    ?.reduce((acc, cur_val) => acc + cur_val, 0);
 
   const completed_orders = all_orders?.filter(
     (order) => order.status.toLowerCase() === "completed"
-  )?.length;
+  );
+
+  const amount = completed_orders
+    ?.map((item) => item.amount)
+    ?.reduce((acc, cur_val) => acc + cur_val, 0);
 
   const active_orders = all_orders?.filter(
     (order) => order.status.toLowerCase() === "ongoingorders"
@@ -53,7 +54,7 @@ function Dashboard() {
         />
         <DashboardCards
           title="Completed Orders"
-          desc={`${completed_orders}`}
+          desc={`${completed_orders?.length || 0}`}
           icon={<MdPedalBike fontSize={"20px"} color="var(--oc-indigo-9)" />}
           bg={"var(--oc-indigo-1)"}
         />

@@ -9,6 +9,7 @@ import OrderOverLay from "../components/Orders/OrderOverLay";
 import { GrView } from "react-icons/gr";
 import useUser from "../components/Auths/useUser";
 import { useNavigate } from "react-router-dom";
+import moment from "moment";
 
 const StyledOrderBack = styled.div`
   /* width: max-content; */
@@ -22,15 +23,16 @@ const StyledOrderBack = styled.div`
 function AllOrders({ order }) {
   const { role } = useUser();
   const navigate = useNavigate();
+  const order_date = moment(order?.createdAt).fromNow();
   return (
     <StyledOrderBack>
       <FlexRow>
         <DescriptionText desc="bold">#Order number</DescriptionText>
-        <DescriptionText desc="tiny">minutes ago</DescriptionText>
+        <DescriptionText desc="tiny">{order_date || ""}</DescriptionText>
       </FlexRow>
       <FlexSpaceBetween mt="25px">
         <FlexRow gap="0.7rem">
-          <ActionButton
+          {/* <ActionButton
             bd="var(--oc-gray-3)"
             bg="var(--oc-gray-3)"
             br="var(--border-radius-xlg)"
@@ -40,7 +42,7 @@ function AllOrders({ order }) {
             fontW={500}
           >
             {order.order_data.items_number} item(s)
-          </ActionButton>
+          </ActionButton> */}
           <ActionButton
             bd="var(--oc-gray-3)"
             bg="var(--oc-gray-3)"

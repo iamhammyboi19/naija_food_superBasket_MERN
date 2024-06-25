@@ -35,7 +35,6 @@ const StyledOrderOverLay = styled.div`
 
   @media (max-width: 45.1875em) {
     width: 100%;
-    height: 100vh;
   }
 `;
 
@@ -112,6 +111,7 @@ function OrderOverLay({ order }) {
   const auto_cancel_at = moment(
     cur_order?.automatically_cancel_unaccepted_order_at
   );
+  const order_date = moment(cur_order?.createdAt).fromNow();
   const current_time = moment(Date.now());
   const check_auto_cancel_at_isDate = isNaN(Date.now(auto_cancel_at._i));
   const time_remaining = check_auto_cancel_at_isDate
@@ -156,7 +156,7 @@ function OrderOverLay({ order }) {
         <StyledBorder $pd="35px 20px 25px 20px">
           <FlexSpaceBetween>
             <DescriptionText desc="bold">#Order number</DescriptionText>
-            <DescriptionText desc="tiny">minutes ago</DescriptionText>
+            <DescriptionText desc="tiny">{order_date || ""}</DescriptionText>
           </FlexSpaceBetween>
           <FlexRow gap="1rem" mt="20px">
             <ActionButton

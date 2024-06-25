@@ -35,6 +35,7 @@ const MainHeader = styled.nav`
 
   @media (max-width: 53.4375em) {
     justify-content: space-between;
+    padding: 1.5rem 2rem;
   }
 `;
 
@@ -117,9 +118,9 @@ function HeaderNav() {
 
       <Modal>
         <Modal.Open opens="usermap">
-          <FlexRow cursor="pointer">
+          <FlexRow gap="0.3rem" cursor="pointer">
             <FaMapMarkerAlt color="var(--oc-green-8)" />
-            <FlexRow gap="5px">
+            <FlexRow gap="0.3rem">
               <DescriptionText desc="true">
                 {user?.location?.length < 1
                   ? "Enter address"
