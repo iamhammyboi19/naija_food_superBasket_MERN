@@ -93,7 +93,7 @@ exports.order_paystack_payment = async (req, res, next) => {
       email: current_user.email_address,
       currency: "NGN",
       reference: current_user._id + Date.now(),
-      callback_url: "https://naija-food-super-basket-mern-frontend.vercel.app/",
+      callback_url: "https://naija-food-superbasket-mern.onrender.com/",
       meta_data: {
         ordered_items,
         custom_fields: [
