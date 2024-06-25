@@ -12,6 +12,11 @@ const errorController = require("./controllers/errorController");
 
 const app = express();
 
+app.enable("trust proxy");
+
+app.use(cors());
+app.options("*", cors());
+
 // const whitelist = [
 //   "http://localhost:5173",
 //   "https://naija-food-super-basket-mern-frontend.vercel.app",
@@ -36,14 +41,11 @@ const app = express();
 //   credentials: true,
 // };
 
-app.use(cookieParser());
-app.use(cors());
-app.options("*", cors());
+app.use(morgan("dev"));
 
 app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "10kb", extended: true }));
-
-app.use(morgan("dev"));
+app.use(cookieParser());
 
 // app.get("/testing", async (req, res, next) => {
 //   res.send({ data: "Checking info" });

@@ -14,7 +14,6 @@ const cookie_options = {
     Date.now() + process.env.COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
   ),
   httpOnly: true,
-  secure: true,
   // secure: process.env.NODE_ENV === "production",
   sameSite: "None",
 };
@@ -109,6 +108,12 @@ exports.verify_email_token = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const token = await createToken(user._id);
+    if (
+      process.env.NODE_ENV === "production" ||
+      req.headers["x-forwarded-proto"] === "https"
+    ) {
+      cookie_options.secure = true;
+    }
     res.cookie("jwt", token, cookie_options);
     res.status(200).json({
       status: "success",
@@ -206,7 +211,12 @@ exports.login_user = async (req, res, next) => {
       await user.save({ validateBeforeSave: false });
 
       const token = await createToken(user._id);
-
+      if (
+        process.env.NODE_ENV === "production" ||
+        req.headers["x-forwarded-proto"] === "https"
+      ) {
+        cookie_options.secure = true;
+      }
       // send cookie response
       res.cookie("jwt", token, cookie_options);
       res.status(200).json({
@@ -355,6 +365,12 @@ exports.reset_password = async (req, res, next) => {
 
     const token = await createToken(user._id);
 
+    if (
+      process.env.NODE_ENV === "production" ||
+      req.headers["x-forwarded-proto"] === "https"
+    ) {
+      cookie_options.secure = true;
+    }
     // send cookie response
     res.cookie("jwt", token, cookie_options);
     res.status(200).json({
@@ -487,6 +503,13 @@ exports.update_password = async (req, res, next) => {
     await get_user.save({ validateBeforeSave: true });
 
     const token = await createToken(get_user._id);
+
+    if (
+      process.env.NODE_ENV === "production" ||
+      req.headers["x-forwarded-proto"] === "https"
+    ) {
+      cookie_options.secure = true;
+    }
     res.cookie("jwt", token, cookie_options);
     res.status(200).json({
       status: "success",
@@ -500,6 +523,12 @@ exports.update_password = async (req, res, next) => {
 
 exports.logout_user = async (req, res, next) => {
   try {
+    if (
+      process.env.NODE_ENV === "production" ||
+      req.headers["x-forwarded-proto"] === "https"
+    ) {
+      cookie_options.secure = true;
+    }
     res.cookie("jwt", "gdgdgfKLoghgOutUsernhfgkh", {
       // expire in 1 sec
       expires: new Date(Date.now() + 1 * 1000),
