@@ -2,16 +2,16 @@
   "name": "user_res_order_prods_carts",
   "version": "1.0.0",
   "description": "A private/public api for restuarant and products order-delivery package",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon server.js",
     "setup-project": "npm i && cd client && npm i",
     "setup-client": "cd client && npm i",
     "client": "cd .. && cd client && npm run dev",
-    "debug": "ndb index.js",
-    "start:d": "NODE_ENV=development nodemon ./api/index.js",
-    "start:p": "NODE_ENV=production nodemon ./api/index.js",
-    "server": "nodemon index.js"
+    "debug": "ndb server.js",
+    "start:d": "NODE_ENV=development nodemon server.js",
+    "start:p": "NODE_ENV=production nodemon server.js",
+    "server": "nodemon server.js"
   },
   "author": "iamhammyboi19",
   "license": "ISC",
