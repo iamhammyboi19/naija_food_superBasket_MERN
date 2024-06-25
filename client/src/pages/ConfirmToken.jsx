@@ -32,7 +32,7 @@ function ConfirmToken() {
 
   if (!isLoading && !isSuccess && error) {
     return (
-      <MaxWidthCenter mw="500px" mt="90px">
+      <MaxWidthCenter pd="5rem 5rem" mw="500px" mt="90px">
         <div
           style={{
             display: "flex",
@@ -59,7 +59,7 @@ function ConfirmToken() {
 
   if (isSuccess) {
     return (
-      <MaxWidthCenter mw="500px" mt="90px">
+      <MaxWidthCenter pd="5rem 5rem" mw="500px" mt="90px">
         <div
           style={{
             display: "flex",

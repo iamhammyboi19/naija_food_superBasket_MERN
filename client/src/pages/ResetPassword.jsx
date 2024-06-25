@@ -46,7 +46,7 @@ function ResetPassword() {
 
   return (
     <>
-      <MaxWidthCenter mt="100px">
+      <MaxWidthCenter pd="5rem 5rem" mt="100px">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <OnFormDescription>Reset your password</OnFormDescription>
           <InnerLabelInputDiv>

@@ -9,7 +9,7 @@ function Confirmation() {
   useDocumentTitle("Verify email");
 
   return (
-    <MaxWidthCenter mw="500px" mt="90px">
+    <MaxWidthCenter pd="5rem 5rem" mw="500px" mt="90px">
       <div
         style={{
           display: "flex",

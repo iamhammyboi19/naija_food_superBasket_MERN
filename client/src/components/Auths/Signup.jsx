@@ -66,7 +66,7 @@ function Signup() {
       >
         <Logo />
       </div>
-      <MaxWidthCenter mt="50px">
+      <MaxWidthCenter pd="5rem 5rem" mt="50px">
         <Form onSubmit={handleSubmit(onSubmit)}>
           <OnFormDescription>Sign up</OnFormDescription>
 
