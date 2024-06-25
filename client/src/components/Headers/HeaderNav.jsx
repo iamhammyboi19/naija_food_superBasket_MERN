@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import Logo from "./Logo";
 // import Search from "./Search";
-import ActionButton from "../../ui/ActionButton";
+// import ActionButton from "../../ui/ActionButton";
 import { HiBars3, HiXMark } from "react-icons/hi2";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import { IoIosArrowDown } from "react-icons/io";
@@ -55,17 +55,17 @@ const FirstPart = styled.div`
   gap: 2rem;
 `;
 
-const SecondPart = styled.div`
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  gap: 1rem;
-  margin-left: auto;
+// const SecondPart = styled.div`
+//   display: flex;
+//   align-items: center;
+//   justify-items: center;
+//   gap: 1rem;
+//   margin-left: auto;
 
-  @media (max-width: 53.4375em) {
-    margin-left: 0;
-  }
-`;
+//   @media (max-width: 53.4375em) {
+//     margin-left: 0;
+//   }
+// `;
 
 function HeaderNav() {
   const {
@@ -134,14 +134,14 @@ function HeaderNav() {
         </Modal.Window>
       </Modal>
 
-      {startHiding && (
+      {/* {startHiding && (
         <SecondPart>
           <ActionButton fg="var(--oc-gray-9)" bg="var(--oc-white)">
             Log in
           </ActionButton>
           <ActionButton>Sign up</ActionButton>
         </SecondPart>
-      )}
+      )} */}
 
       {/* {!startHiding && (
         <HiMiniMagnifyingGlass

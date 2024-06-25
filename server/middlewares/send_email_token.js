@@ -38,9 +38,11 @@ exports.send_email_token = (token_name) => async (req, res, next) => {
     let host;
 
     if (process.env.NODE_ENV === "production") {
-      host = "https://naija-food-super-basket-mern-frontend.vercel.app";
+      // host = "https://naija-food-super-basket-mern-frontend.vercel.app";
+      host = "/";
     } else {
-      host = "http://localhost:5173";
+      // host = "http://localhost:5173";
+      host = "/";
     }
 
     if (token_name === "signup") {

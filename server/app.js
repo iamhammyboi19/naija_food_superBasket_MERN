@@ -1,6 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const CustomError = require("./utils/CustomError");
 const userRoute = require("./routes/userRoute");
@@ -16,6 +17,8 @@ app.enable("trust proxy");
 
 app.use(cors());
 app.options("*", cors());
+
+app.use(express.static(path.resolve(__dirname, "./public")));
 
 // const whitelist = [
 //   "http://localhost:5173",
@@ -47,6 +50,10 @@ app.use(express.json({ limit: "10kb" }));
 app.use(express.urlencoded({ limit: "10kb", extended: true }));
 app.use(cookieParser());
 
+app.get("/", (req, res) => {
+  res.send("Welcome to naijaFoodSuperBasket");
+});
+
 // app.get("/testing", async (req, res, next) => {
 //   res.send({ data: "Checking info" });
 // });
@@ -56,6 +63,10 @@ app.use("/api/v1/menus", menuRoute);
 app.use("/api/v1/carts", cartRoute);
 app.use("/api/v1/orders", orderRoute);
 app.use("/api/v1/reviews", reviewRoute);
+
+app.get("*", (req, res) => {
+  res.sendFile(path.resolve(__dirname, "./public", "index.html"));
+});
 
 app.all("*", (req, res, next) => {
   return next(

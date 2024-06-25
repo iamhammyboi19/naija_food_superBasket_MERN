@@ -20,8 +20,8 @@ const HomeRedirectLink = styled.a`
 function Logo() {
   return (
     <HomeRedirectLink href="/">
-      <LogoImg src="/page-not-found-desktop.webp" alt="headerlogo" />
-      <HeaderTitle>header title</HeaderTitle>
+      <LogoImg src="/food_online_logo.png" alt="headerlogo" />
+      <HeaderTitle>Naija Food SuperBasket</HeaderTitle>
     </HomeRedirectLink>
   );
 }

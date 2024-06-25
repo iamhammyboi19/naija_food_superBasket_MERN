@@ -1,7 +1,6 @@
 import axios from "axios";
 
-const menusBaseUrl =
-  "https://naija-food-super-basket-backend-api.vercel.app/api/v1/menus";
+const menusBaseUrl = "/api/v1/menus";
 
 const axios_instance = axios.create({
   withCredentials: true,
