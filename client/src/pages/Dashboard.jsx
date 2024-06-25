@@ -19,11 +19,11 @@ function Dashboard() {
     ?.map((item) => item.amount)
     ?.reduce((acc, cur_val) => acc + cur_val, 0);
 
-  const completed_orders = all_orders.filter(
+  const completed_orders = all_orders?.filter(
     (order) => order.status.toLowerCase() === "completed"
   )?.length;
 
-  const active_orders = all_orders.filter(
+  const active_orders = all_orders?.filter(
     (order) => order.status.toLowerCase() === "ongoingorders"
   )?.length;
 
