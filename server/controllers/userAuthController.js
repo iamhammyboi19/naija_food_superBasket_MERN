@@ -418,7 +418,6 @@ exports.forgot_password = async (req, res, next) => {
     let host;
 
     if (process.env.NODE_ENV === "production") {
-      // host = "https://naija-food-super-basket-mern-frontend.vercel.app";
       host = "https://naija-food-superbasket-mern.onrender.com";
     } else {
       host = "http://localhost:5173";

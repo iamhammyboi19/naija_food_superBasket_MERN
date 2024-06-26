@@ -39,10 +39,8 @@ exports.send_email_token = (token_name) => async (req, res, next) => {
 
     if (process.env.NODE_ENV === "production") {
       host = "https://naija-food-superbasket-mern.onrender.com";
-      host = "/";
     } else {
-      // host = "http://localhost:5173";
-      host = "/";
+      host = "http://localhost:5173";
     }
 
     if (token_name === "signup") {
