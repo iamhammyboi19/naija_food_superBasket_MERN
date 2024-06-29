@@ -23,8 +23,6 @@ function ToppingsOverlay({ onCloseModal, edit_toppings = {} }) {
   const { update_toppings_api, is_updating_toppings } = useUpdateToppings();
   const isLoading = is_adding_toppings || is_updating_toppings;
 
-  console.log("toppings_slug_ToppingsOverlay", toppings_slug);
-
   const [compulsory, setCompulsory] = useState(
     edit_toppings.compulsory || false
   );

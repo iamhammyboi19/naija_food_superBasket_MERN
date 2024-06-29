@@ -54,7 +54,7 @@ const StyledErrorCon = styled.div`
 
 function Error() {
   const location = useLocation();
-  console.log(location);
+
   return (
     <StyledErrorCon>
       <StyledError>

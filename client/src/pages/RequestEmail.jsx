@@ -9,6 +9,7 @@ import { useForm } from "react-hook-form";
 import FormErrorMessage from "../ui/FormErrorMessage";
 import { Link } from "react-router-dom";
 import useDocumentTitle from "../hooks/useDocumentTitle";
+import useRequestEmail from "../components/Auths/useRequestEmail";
 
 const Form = styled.form`
   max-width: 400px;
@@ -41,12 +42,22 @@ function RequestEmail({ reason }) {
     register,
     formState: { errors },
     handleSubmit,
+    reset,
   } = useForm();
 
   useDocumentTitle(reason);
 
+  const { isPending, mutate } = useRequestEmail();
+
   function onSubmit(data) {
-    console.log(data);
+    mutate(
+      { data },
+      {
+        onSettled: () => {
+          reset();
+        },
+      }
+    );
   }
 
   return (
@@ -72,7 +83,7 @@ function RequestEmail({ reason }) {
               </FormErrorMessage>
             )}
           </InnerLabelInputDiv>
-          <LongFormButton>Continue</LongFormButton>
+          <LongFormButton disabled={isPending}>Continue</LongFormButton>
         </Form>
         <div style={{ display: "flex", justifyContent: "center" }}>
           <StyledLink to="/login">Back to Log in</StyledLink>

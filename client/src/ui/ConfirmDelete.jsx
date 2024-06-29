@@ -56,7 +56,6 @@ function ConfirmDelete({
           br="var(--border-radius-sm)"
           disabled={disabled}
           onClick={() => {
-            console.log("onconfirmed");
             onConfirm();
           }}
         >

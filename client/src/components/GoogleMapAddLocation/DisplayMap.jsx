@@ -141,7 +141,6 @@ function PlacesAutoComplete({ getUserPosition, isLoading, position }) {
 
     // takes selected address and convert to geocode then from geocode to lat lng which is updated so the map can rerender to the speicific lat lng
     const results = await getGeocode({ address });
-    console.log("results", results?.at(0)?.formatted_address);
     const { lat, lng } = getLatLng(results[0]);
     dispatch(addLatLng({ lat, lng }));
   };

@@ -9,7 +9,6 @@ export default function useUpdateToppings() {
       mutationFn: ({ menu_id, data, toppings_slug }) =>
         update_toppings(data, menu_id, toppings_slug),
       onSuccess: (data) => {
-        console.log("update_toppings_api", data);
         toast.success(data.message);
         queryClient.invalidateQueries(["menu"]);
       },

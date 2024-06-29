@@ -34,7 +34,6 @@ exports.get_all_users = async (req, res, next) => {
 
 exports.get_all_restaurants = async (req, res, next) => {
   try {
-    console.log("req.query", req.query);
     const doc = new ApiFeatures(
       User.find({
         role: "restaurant",
@@ -164,7 +163,7 @@ exports.add_product_to_cart = async (req, res, next) => {
         (el) => String(el.restaurant) !== String(menu.restaurant)
       );
 
-    if (check_different_menu_id.length > 0) {
+    if (check_different_menu_id?.length > 0) {
       return res.status(200).json({
         issue: true,
         status: "success",
@@ -382,8 +381,6 @@ exports.remove_cart = async (req, res, next) => {
 exports.restrict_user = async (req, res, next) => {
   try {
     const user = req.current_user.role === "user";
-
-    console.log("user", user);
 
     if (user) {
       return next(

@@ -8,14 +8,14 @@ export default function useResetPassword() {
 
   const queryClient = new QueryClient();
 
-  const { mutate, data, isPending } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: ({ token, data: inputdata }) =>
       verify_email_reset_password_token(token, inputdata),
 
-    onSuccess: ({ data: user }) => {
-      toast.success(data.message);
+    onSuccess: (data) => {
+      toast.success(data?.message);
       navigate("/dashboard", { replace: true });
-      queryClient.setQueryData(["user"], user);
+      queryClient.setQueryData(["user"], data?.user);
     },
 
     onError: (err) => {

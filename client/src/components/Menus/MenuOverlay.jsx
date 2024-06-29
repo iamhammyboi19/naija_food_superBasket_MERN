@@ -46,8 +46,6 @@ function MenuOverlay({ showHide, menu }) {
           }
         : data;
 
-    console.log("newdata", newdata);
-
     update_menu_api({ menu_id: menu._id, data: newdata });
   }
 

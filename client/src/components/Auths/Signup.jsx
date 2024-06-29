@@ -42,6 +42,7 @@ function Signup() {
     formState: { errors },
     handleSubmit,
     unregister,
+    getValues,
     // reset,
   } = useForm({ defaultValues: { role: "user" } });
 
@@ -52,7 +53,6 @@ function Signup() {
   useDocumentTitle("Signup - Naija Food superBasket");
 
   function onSubmit(data) {
-    console.log("data", data);
     mutate(data);
   }
 
@@ -117,9 +117,26 @@ function Signup() {
             )}
           </InnerLabelInputDiv>
           <InnerLabelInputDiv>
+            <LabelName>Confirm password</LabelName>
+            <InputText
+              placeholder="Confirm Password"
+              type="password"
+              {...register("confirmpassword", {
+                required: "Confirm password is required",
+                validate: (value) =>
+                  value === getValues("password") || "Must be same as password",
+              })}
+            />
+            {errors?.confirmpassword && (
+              <FormErrorMessage>
+                {errors.confirmpassword.message}
+              </FormErrorMessage>
+            )}
+          </InnerLabelInputDiv>
+          <InnerLabelInputDiv>
             <LabelName>Phone Number</LabelName>
             <InputText
-              placeholder="Phone number"
+              placeholder="+2349020003000"
               type="tel"
               {...register("phone_number", {
                 required: "Please provide your phone number",

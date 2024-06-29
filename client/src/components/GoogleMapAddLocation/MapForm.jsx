@@ -25,8 +25,6 @@ function MapForm({ lat, lng }) {
   const { initialAddress } = useSelector((state) => state.latlng);
   const { is_adding_location, add_location } = useAddLocation();
 
-  console.log("address", address);
-
   const {
     register,
     formState: { errors },

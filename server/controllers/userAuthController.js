@@ -343,7 +343,8 @@ exports.reset_password = async (req, res, next) => {
     // console.log(
     //   await User.findOne({ passwordResetToken: hash_token }),
     //   Date.now()
-    // );
+    // );""
+
     const user = await User.findOne({
       password_reset_token: hash_token,
       password_reset_token_expires_at: { $gt: Date.now() },
@@ -361,6 +362,9 @@ exports.reset_password = async (req, res, next) => {
     user.password = password;
     user.password_reset_token = undefined;
     user.password_reset_token_expires_at = undefined;
+    user.confirm_email_token_expires_at = undefined;
+    user.confirm_user_email_address_token = undefined;
+    user.confirmed_user_email_address = true;
     await user.save({ validateBeforeSave: false });
 
     const token = await createToken(user._id);
@@ -395,7 +399,8 @@ exports.forgot_password = async (req, res, next) => {
         )
       );
     }
-    const user = await User.findOne({ email_address });
+    // email_address = {email_address: "me@me.com"}
+    const user = await User.findOne(email_address);
     if (!user) {
       return next(
         new CustomError(`There is no user with this email address`, 404)

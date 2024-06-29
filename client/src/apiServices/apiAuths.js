@@ -89,14 +89,10 @@ export async function verify_email_signup_token(token) {
       url: `${usersBaseUrl}/signup/${token}`,
     });
 
-    // console.log("res", res);
-    // console.log("token", token);
-
     if (res.data.status === "success") {
       return res.data;
     }
   } catch (err) {
-    console.log("err", err);
     throw new Error(String(err.response.data.message));
   }
 }
@@ -105,7 +101,7 @@ export async function verify_email_reset_password_token(token, data) {
   try {
     const res = await axios({
       method: "patch",
-      url: `${usersBaseUrl}/reset_password/:${token}`,
+      url: `${usersBaseUrl}/reset_password/${token}`,
       data,
     });
 

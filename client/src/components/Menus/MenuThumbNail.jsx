@@ -66,7 +66,10 @@ function MenuThumbNail({ menu }) {
             accept="image/*"
             id="menuupload"
             style={{ display: "none" }}
-            onChange={(e) => console.log(e.target.value)}
+            //e.target.value
+            onChange={() => {
+              console.log("");
+            }}
           />
           <RiBallPenFill fontSize={"1rem"} color="var(--oc-gray-6)" />
         </NewIconBackGroundTaker>

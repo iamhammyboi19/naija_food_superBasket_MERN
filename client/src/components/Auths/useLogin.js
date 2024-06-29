@@ -12,7 +12,6 @@ export default function useLogin() {
       navigate("/", { replace: true });
     },
     onError: (err) => {
-      console.log(err);
       toast.error(err.message.split(":").pop(), { duration: 4000 });
     },
   });
