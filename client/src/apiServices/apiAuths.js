@@ -56,6 +56,7 @@ export async function get_current_user_from_cookie() {
     const res = await axios({
       method: "get",
       url: `${usersBaseUrl}/authuser`,
+      withCredentials: true,
     });
 
     if (res.data.status === "success") {

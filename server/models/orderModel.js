@@ -26,7 +26,7 @@ const orderSchema = new mongoose.Schema({
   createdAt: { type: Date, default: new Date(Date.now) },
   amount: { type: Number, required: true },
   paymentmethod: { type: String, default: "Card" },
-  status: { type: String, default: "neworders" },
+  status: { type: String, default: "processing" },
   current_order_status: { type: String, default: "order_placed" },
   automatically_cancel_unaccepted_order_at: { type: Date },
   cancelled: { type: Boolean, default: false },

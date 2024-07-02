@@ -298,7 +298,7 @@ exports.accept_order = async (req, res, next) => {
       return next(new CustomError("Order acceptance time expired", 400));
     }
 
-    order.status = "ongoingorders";
+    order.status = "processing";
     order.current_order_status = "order_confirmed";
     order.stage = 2;
     order.automatically_cancel_unaccepted_order_at = null;

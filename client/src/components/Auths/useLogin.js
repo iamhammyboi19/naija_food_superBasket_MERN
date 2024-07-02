@@ -9,7 +9,7 @@ export default function useLogin() {
     mutationFn: ({ data }) => loginUser(data),
     onSuccess: ({ message }) => {
       toast.success(message);
-      navigate("/", { replace: true });
+      navigate("/dashboard", { replace: true });
     },
     onError: (err) => {
       toast.error(err.message.split(":").pop(), { duration: 4000 });

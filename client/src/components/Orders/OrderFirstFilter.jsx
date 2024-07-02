@@ -84,13 +84,13 @@ function OrderFirstFilter() {
             id="2"
             className={activeBtn === "2" ? "activebtn" : ""}
             onClick={(e) => {
-              handleActive.bind(["neworders"])(e);
+              handleActive.bind(["processing"])(e);
             }}
-            disabled={currentStatus === "neworders"}
+            disabled={currentStatus === "processing"}
           >
-            New
+            Processing
           </Button>
-          <Button
+          {/* <Button
             key="3"
             id="3"
             className={activeBtn === "3" ? "activebtn" : ""}
@@ -100,12 +100,12 @@ function OrderFirstFilter() {
             disabled={currentStatus === "ongoingorders"}
           >
             Ongoing
-          </Button>
+          </Button> */}
 
           <Button
-            key="4"
-            id="4"
-            className={activeBtn === "4" ? "activebtn" : ""}
+            key="3"
+            id="3"
+            className={activeBtn === "3" ? "activebtn" : ""}
             onClick={(e) => {
               handleActive.bind(["completed"])(e);
             }}
@@ -114,9 +114,9 @@ function OrderFirstFilter() {
             Completed
           </Button>
           <Button
-            key="5"
-            id="5"
-            className={activeBtn === "5" ? "activebtn" : ""}
+            key="4"
+            id="4"
+            className={activeBtn === "4" ? "activebtn" : ""}
             onClick={(e) => {
               handleActive.bind(["cancelled"])(e);
             }}
