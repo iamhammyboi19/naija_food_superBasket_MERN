@@ -1,3 +1,8 @@
+/*
+I CHANGED THIS LOGIC TO USING busboy, sharp, aws sdk v3
+check busboy_awssdkv3_sharp_upload.js file
+*/
+
 const multer = require("multer");
 const multer_S3 = require("multer-s3");
 const aws = require("aws-sdk");

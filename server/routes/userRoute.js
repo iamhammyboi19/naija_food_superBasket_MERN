@@ -2,8 +2,9 @@ const router = require("express").Router();
 const locationController = require("../controllers/locationController");
 const userAuthController = require("../controllers/userAuthController");
 const userController = require("../controllers/userController");
-const multer_imgs_upload = require("../middlewares/multer_imgs_upload");
+// const multer_imgs_upload = require("../middlewares/multer_imgs_upload");
 const { send_email_token } = require("../middlewares/send_email_token");
+const busboy_awssdkv3_sharp_upload = require("../middlewares/busboy_awssdkv3_sharp_upload");
 // const multer_imgs_upload = require("../middlewares/multer_imgs_upload");
 
 router.post(
@@ -33,7 +34,11 @@ router.patch(
   userAuthController.update_email_address,
   send_email_token("update_email")
 );
-router.patch("/update_me", multer_imgs_upload, userController.update_user);
+router.patch(
+  "/update_me",
+  busboy_awssdkv3_sharp_upload,
+  userController.update_user
+);
 router.patch("/update_password", userAuthController.update_password);
 
 router

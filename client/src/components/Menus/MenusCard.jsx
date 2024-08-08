@@ -9,8 +9,6 @@ import MenuOverlay from "./MenuOverlay";
 import { useState } from "react";
 import FlexSpaceBetween from "../../ui/FlexSpaceBetween";
 
-// import IconsBackgroundTaker from "../../ui/IconsBackgroundTaker";
-
 const StyledMenuCard = styled.div`
   width: 25rem;
   padding: 20px 10px 10px 10px;
