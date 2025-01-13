@@ -171,7 +171,6 @@ function EmptyOrder() {
       </DescriptionText>
       <ActionButton
         onClick={() => navigate("/restaurants")}
-        width={"50px"}
         br="var(--border-radius-xlg)"
       >
         Find food

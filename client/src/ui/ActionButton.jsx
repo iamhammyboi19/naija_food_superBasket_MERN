@@ -1,5 +1,19 @@
 /* eslint-disable react/prop-types */
-import styled, { css } from "styled-components";
+import styled, { css, keyframes } from "styled-components";
+
+const scaleBtn = keyframes`
+  0%{
+    scale: 1;
+  }
+
+  50%{
+    scale: 1.08;
+  }
+
+  100%{
+    scale: 1;
+  }
+`;
 
 const CallToAction = styled.button`
   font-size: ${(props) => props.$fs || "14px"};
@@ -10,9 +24,12 @@ const CallToAction = styled.button`
   border-radius: ${(props) => props.$br || ""};
   padding-right: ${(props) => props.$pr || ""};
   background-color: ${(props) => props.$bg || "var(--oc-gray-9)"};
-  transition: all ease 0.3s;
+  letter-spacing: 0.2px;
+  /* width: ${(props) => props.$width || "100%"}; */
+  transition: all ease 0.5s;
   margin-top: ${(props) => props.$mt || "0px"};
   margin-left: ${(props) => props.$ml || "0px"};
+  margin-right: ${(props) => props.$mr || "0px"};
   border-top-right-radius: ${(props) => props.$btr || ""};
   border-bottom-right-radius: ${(props) => props.$bbr || ""};
   border-bottom-left-radius: ${(props) => props.$bbl || ""};
@@ -32,9 +49,49 @@ const CallToAction = styled.button`
     props.$hover === "yes" &&
     css`
       &:hover {
-        color: ${(props) => props.$nfg};
-        background-color: ${(props) => props.$nbg};
+        color: ${(props) => props.$nfg || "var(--oc-white)"};
+        background-color: ${(props) => props.$nbg || "var(--oc-gray-9)"};
+        animation-play-state: paused;
+        transform: scale(0.9);
       }
+    `}
+
+    ${(props) =>
+    props.$hover === "yez" &&
+    css`
+      &:hover {
+        color: ${(props) => props.$nfg || "var(--oc-white)"};
+        background-color: ${(props) => props.$nbg || "var(--oc-gray-9)"};
+        border: 1px solid ${(props) => props.$nbd || "var(--oc-gray-9)"};
+      }
+    `}
+
+    ${(props) =>
+    props.$animate === "yes" &&
+    css`
+      animation: ${scaleBtn} 2s ease-in-out infinite;
+    `}
+
+    ${(props) =>
+    props.$width &&
+    css`
+      width: ${(props) => props.$width};
+
+      @media (max-width: 53.75em) {
+        width: 50%;
+      }
+    `} 
+
+    ${(props) =>
+    props.$width2 &&
+    css`
+      width: ${(props) => props.$width2};
+    `} 
+
+    ${(props) =>
+    props.$pos === "yes" &&
+    css`
+      position: relative;
     `}
 
   ${(props) =>
@@ -49,7 +106,6 @@ const CallToAction = styled.button`
 
 function ActionButton({
   children,
-  fs,
   fg,
   bg,
   bd,
@@ -60,18 +116,24 @@ function ActionButton({
   pd,
   onClick,
   fontW,
+  fs,
   nfg,
   nbg,
+  nbd,
   hover,
   mt,
   ml,
+  mr,
   width,
+  width2,
   btl,
   bbr,
   bbl,
   btr,
+  pos,
   type,
   disabled,
+  animate,
 }) {
   return (
     <CallToAction
@@ -83,18 +145,23 @@ function ActionButton({
       $pr={pr}
       $fw={fw}
       $width={width}
+      $width2={width2}
       $flex={flex}
       $pd={pd}
       $nfg={nfg}
       $nbg={nbg}
+      $nbd={nbd}
       $hover={hover}
       $fontW={fontW}
       $mt={mt}
       $ml={ml}
+      $mr={mr}
       $btl={btl}
       $btr={btr}
       $bbl={bbl}
       $bbr={bbr}
+      $pos={pos}
+      $animate={animate}
       onClick={onClick}
       type={type}
       disabled={disabled}

@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import useUser from "../Auths/useUser";
 
 const LogoImg = styled.img`
   max-width: 3rem;
@@ -18,8 +19,9 @@ const HomeRedirectLink = styled.a`
 `;
 
 function Logo() {
+  const { user } = useUser();
   return (
-    <HomeRedirectLink href="/">
+    <HomeRedirectLink href={user ? "/dashboard" : "/"}>
       <LogoImg src="/food_online_logo.png" alt="headerlogo" />
       <HeaderTitle>Naija Food SuperBasket</HeaderTitle>
     </HomeRedirectLink>

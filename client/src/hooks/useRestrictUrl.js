@@ -9,7 +9,7 @@ export default function useRestrictUrl(user_role) {
 
   useEffect(
     function () {
-      if (role === user_role) navigate("/");
+      if (role === user_role) navigate("/dashboard");
     },
     [navigate, role, user_role]
   );

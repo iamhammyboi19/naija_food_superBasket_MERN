@@ -374,6 +374,13 @@ a{
 }
 
 
+@property --angle{
+   syntax: "<angle>";
+   inherits: false;
+   initial-value: 360deg;
+}
+
+
 select:disabled,
 input:disabled {
   background-color: var(--oc-gray-2);

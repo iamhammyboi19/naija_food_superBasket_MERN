@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import GlobalStyle from "./styles/GlobalStyles";
 import { AppLayout } from "./pages/AppLayout";
 import Dashboard from "./pages/Dashboard";
@@ -25,6 +25,7 @@ import Account from "./pages/Account";
 import Checkout from "./pages/Checkout";
 import OrderDetails from "./pages/OrderDetails";
 import Logout from "./pages/Logout";
+import Home from "./pages/Home";
 // import LineTime from "./pages/LineTime";
 
 const queryClient = new QueryClient({
@@ -43,37 +44,8 @@ function App() {
         <ReactQueryDevtools initialIsOpen={false} />
         <BrowserRouter>
           <Routes>
-            <Route
-              path="/"
-              element={
-                <ProtectedRoute>
-                  <AppLayout />
-                </ProtectedRoute>
-              }
-            >
-              <Route
-                index
-                element={<Navigate to="/dashboard" replace={true} />}
-              ></Route>
-              <Route path="/dashboard" element={<Dashboard />}></Route>
-              <Route path="/restaurants" element={<Restaurants />}></Route>
-              <Route
-                path="/restaurants/:restaurant_id"
-                element={<Restaurant />}
-              ></Route>
-              <Route path="/menus" element={<Menus />}></Route>
-              <Route path="/menus/:menu_id" element={<Menu />}></Route>
-              <Route path="/orders" element={<Orders />}></Route>
-              <Route
-                path="/orders/:order_id"
-                element={<OrderDetails />}
-              ></Route>
-              <Route path="/carts" element={<Carts />}></Route>
-              <Route path="/carts/checkout" element={<Checkout />}></Route>
-              {/* <Route path="/map" element={<Map />}></Route> */}
-              <Route path="/account" element={<Account />}></Route>
-              <Route path="/logout" element={<Logout />}></Route>
-            </Route>
+            {/* public routes */}
+            <Route path="/" element={<Home />}></Route>
             <Route path="/signup" element={<Signup />}></Route>
             <Route path="/login" element={<Login />}></Route>
             <Route path="/confirmaccount" element={<Confirmation />}></Route>
@@ -93,6 +65,34 @@ function App() {
               path="/resetpassword/:token"
               element={<ResetPassword />}
             ></Route>
+
+            {/* authenticated routes */}
+            <Route
+              element={
+                <ProtectedRoute>
+                  <AppLayout />
+                </ProtectedRoute>
+              }
+            >
+              <Route path="/dashboard" element={<Dashboard />}></Route>
+              <Route path="/restaurants" element={<Restaurants />}></Route>
+              <Route
+                path="/restaurants/:restaurant_id"
+                element={<Restaurant />}
+              ></Route>
+              <Route path="/menus" element={<Menus />}></Route>
+              <Route path="/menus/:menu_id" element={<Menu />}></Route>
+              <Route path="/orders" element={<Orders />}></Route>
+              <Route
+                path="/orders/:order_id"
+                element={<OrderDetails />}
+              ></Route>
+              <Route path="/carts" element={<Carts />}></Route>
+              <Route path="/carts/checkout" element={<Checkout />}></Route>
+              {/* <Route path="/map" element={<Map />}></Route> */}
+              <Route path="/account" element={<Account />}></Route>
+              <Route path="/logout" element={<Logout />}></Route>
+            </Route>
 
             <Route path="*" element={<Error />}></Route>
           </Routes>

@@ -10,9 +10,9 @@ const StyledFlex = styled.div`
   align-self: flex-start;
 `;
 
-function FlexSpaceBetween({ children, fe, mt }) {
+function FlexSpaceBetween({ children, fe, mt, onClick }) {
   return (
-    <StyledFlex $fe={fe} $mt={mt}>
+    <StyledFlex $fe={fe} $mt={mt} onClick={onClick}>
       {children}
     </StyledFlex>
   );

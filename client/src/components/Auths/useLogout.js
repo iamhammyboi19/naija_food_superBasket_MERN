@@ -8,7 +8,7 @@ export default function useLogin() {
   const { isPending, mutate } = useMutation({
     mutationFn: () => logoutUser(),
     onSuccess: () => {
-      navigate("/login");
+      navigate("/login", { replace: true });
     },
     onError: () => {
       navigate("/");

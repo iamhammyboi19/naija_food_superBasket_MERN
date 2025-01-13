@@ -21,6 +21,7 @@
     "@tiptap/starter-kit": "^2.2.3",
     "axios": "^1.6.8",
     "dayjs": "^1.11.10",
+    "framer-motion": "^11.16.4",
     "google-map-react": "^2.2.1",
     "localforage": "^1.10.0",
     "match-sorter": "^6.3.4",

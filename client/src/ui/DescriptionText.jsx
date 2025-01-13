@@ -82,10 +82,15 @@ const StyledDesText = styled.p`
     ${(props) =>
     props.$desc === "bold-xl" &&
     css`
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       color: ${(props) => (props.$color ? props.$color : "var(--oc-gray-8)")};
-      font-weight: 600;
-      letter-spacing: 0.3px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      /* text-transform: uppercase; */
+
+      @media (max-width: 31.25em) {
+        letter-spacing: 0.2px;
+      }
     `}
 
     ${(props) =>
@@ -101,13 +106,12 @@ const StyledDesText = styled.p`
     ${(props) =>
     props.$desc === "fade-bold" &&
     css`
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       color: var(--oc-gray-7);
       font-weight: 400;
       letter-spacing: 0.6px;
 
       @media (max-width: 31.25em) {
-        font-size: 1rem;
         letter-spacing: 0.2px;
       }
     `}
