@@ -40,7 +40,7 @@ const StyledAutoSvgs = styled.div`
   }
 
   @media (max-width: 39.375em) {
-    height: 95dvh;
+    height: 110dvh;
   }
 `;
 
@@ -229,7 +229,7 @@ const BottomTextsCon = styled.div`
   }
 
   @media (max-width: 39.375em) {
-    bottom: 65px;
+    bottom: 30px;
   }
 `;
 
