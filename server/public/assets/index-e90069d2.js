@@ -3021,7 +3021,7 @@ ${t}`,FY=Object.getOwnPropertyDescriptor(Function.prototype,"toString"),NY=Objec
   }
 
   @media (max-width: 39.375em) {
-    height: 95dvh;
+    height: 110dvh;
   }
 `,kJ=P.figure`
   background-color: ${e=>e.$bg||"#3d8960"};
@@ -3157,7 +3157,7 @@ ${t}`,FY=Object.getOwnPropertyDescriptor(Function.prototype,"toString"),NY=Objec
   }
 
   @media (max-width: 39.375em) {
-    bottom: 65px;
+    bottom: 30px;
   }
 `;function vu({title:e,pic:t,bg:n,setCurSlide:r,curSlide:i}){return u.jsxs(kJ,{$bg:n,children:[u.jsx(LJ,{children:e}),u.jsx(MJ,{children:u.jsx(EJ,{src:t})}),u.jsxs(_J,{children:[u.jsx(gu,{$index:1,$curSlide:i,onClick:()=>r(1),children:u.jsx(bJ,{fontSize:"3.5rem"})}),u.jsx(gu,{$index:2,$curSlide:i,onClick:()=>r(2),children:u.jsx("span",{style:{fontWeight:700,fontSize:"15px"},children:"01"})}),u.jsx(gu,{$index:3,$curSlide:i,onClick:()=>r(3),children:u.jsx("span",{style:{fontWeight:700,fontSize:"15px"},children:"02"})}),u.jsx(gu,{$index:4,$curSlide:i,onClick:()=>r(4),children:u.jsx("span",{style:{fontWeight:700,fontSize:"15px"},children:"03"})}),u.jsx(gu,{$index:5,$curSlide:i,onClick:()=>r(5),children:u.jsx(k8,{fontSize:"5rem"})})]})]})}function TJ(){const[e,t]=h.useState(1),n=function(){t(r=>r===5?r=1:r+=1)};return h.useEffect(function(){const r=setInterval(n,5e3);return()=>clearInterval(r)},[e]),u.jsxs(CJ,{children:[e===1&&u.jsx(vu,{title:"Get started in 3",pic:"/burger/african-meals.svg",setCurSlide:t,curSlide:e}),e===2&&u.jsx(vu,{title:"Download the app",pic:"/burger/Fastfoodxsnacks.svg",setCurSlide:t,bg:"#8978e5",curSlide:e}),e===3&&u.jsx(vu,{title:"Explore categories",pic:"/burger/drink.svg",setCurSlide:t,bg:"#f6c744",curSlide:e}),e===4&&u.jsx(vu,{title:"Place your orders",pic:"/burger/Fitfam.svg",setCurSlide:t,bg:"#ef8e5a",curSlide:e}),e===5&&u.jsx(vu,{title:"Enjoy your meal",pic:"/burger/Pack.svg",setCurSlide:t,bg:"#fceeba",curSlide:e}),u.jsxs(jJ,{children:[u.jsx(PJ,{as:"h1",children:"Naija Food SuperBasket has you covered!"}),u.jsx(X,{color:"var(--oc-white)",desc:"bold-xl",children:"Hungry? Too tired to cook? Have friends over, or do you simply need to chop life? Download NaijaFoodSuperBasket, and let’s deliver happiness to your doorstep in minutes."})]})]})}const OJ=P.div`
   display: grid;
