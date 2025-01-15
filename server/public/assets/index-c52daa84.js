@@ -3060,7 +3060,7 @@ ${t}`,FY=Object.getOwnPropertyDescriptor(Function.prototype,"toString"),NY=Objec
   display: flex;
   align-items: center;
   align-self: flex-start;
-  margin-left: 3rem;
+  margin-left: 0.5rem;
   gap: 1.4rem;
 `,gu=P(na)`
   height: 60px;
@@ -3121,6 +3121,11 @@ ${t}`,FY=Object.getOwnPropertyDescriptor(Function.prototype,"toString"),NY=Objec
       background-color: #fceeba;
       color: #dc6747;
     `}
+
+    @media (max-width: 39.375em) {
+    height: 50px;
+    width: 50px;
+  }
 `,MJ=P.div`
   width: 100%;
   height: 45rem;

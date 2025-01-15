@@ -30,3 +30,5 @@ config.js
 test.py
 App-v1.js
 *.txt
+dist
+/dist
