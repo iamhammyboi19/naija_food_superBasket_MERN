@@ -87,7 +87,7 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   align-self: flex-start;
-  margin-left: 3rem;
+  margin-left: 0.5rem;
   gap: 1.4rem;
 `;
 
@@ -187,6 +187,11 @@ const NewBtTaker = styled(IconsBackgroundTaker)`
       background-color: #fceeba;
       color: #dc6747;
     `}
+
+    @media (max-width: 39.375em) {
+    height: 50px;
+    width: 50px;
+  }
 `;
 
 const ImgDiv = styled.div`
