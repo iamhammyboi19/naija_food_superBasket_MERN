@@ -3060,7 +3060,7 @@ ${t}`,FY=Object.getOwnPropertyDescriptor(Function.prototype,"toString"),NY=Objec
   display: flex;
   align-items: center;
   align-self: flex-start;
-  margin-left: 0.5rem;
+  margin-left: 1.2rem;
   gap: 1.4rem;
 `,gu=P(na)`
   height: 60px;

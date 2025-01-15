@@ -87,7 +87,7 @@ const Flex = styled.div`
   display: flex;
   align-items: center;
   align-self: flex-start;
-  margin-left: 0.5rem;
+  margin-left: 1.2rem;
   gap: 1.4rem;
 `;
 
